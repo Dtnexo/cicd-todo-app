@@ -14,4 +14,13 @@ const exceptions = [
     "date": "2025-05-28T08:40",
     "duration": "50"
   },
+  {
+    "patch": true,
+    "name": "doc(planification): Faire la planif sur github project",
+    "description": "Pas sûre à 100% qu'elle soit juste et terminer.\nMais j'ai mit les grosses tâches importantes dans la planification.\nIl faudra sûrement la modifier par la suite.",
+    "date": "2025-11-20T16:09:00.000Z",
+    "duration": 50,
+    "status": "Done",
+    "author": "Evinne8"
+  }
 ]
