@@ -22,5 +22,14 @@ const exceptions = [
     "duration": 50,
     "status": "Done",
     "author": "Evinne8"
+  },
+  {
+    "patch": true,
+    "name": "chore(portesOuverte): Discussion sur les portes ouvertes du 6 décembre",
+    "description": "On a parlé avec la prof du déroulement des portes ouvertes du 6 décembre",
+    "date": "2025-11-27T14:35:00.000Z",
+    "duration": 20,
+    "status": "Done",
+    "author": "Dtnexo"
   }
 ]
