@@ -271,7 +271,7 @@
 
 <script src=".config.js"></script>
 <script>
-  var filteringUsers = ["dtnexo","Evinne8"]; // the github user names to take into account as committers
+  var filteringUsers = ["Evinne8"]; // the github user names to take into account as committers
   var repoOwner = "?"; // the owner of the selected repo
   var myCommits = [];
 
@@ -284,7 +284,6 @@
       txtDefaultRepo.innerText = typeof defaultRepo.alias != "undefined" ? defaultRepo.alias : defaultRepo.url;
       repoUrl.value = defaultRepo.url;
       await fetchGitBranches();
-      filteringUsers.push(repoOwner);
       if (typeof defaultRepo.users != "undefined") filteringUsers.push(...defaultRepo.users);
     } else if (typeof repos != "undefined") {
       selectMode.classList.remove("d-none");
@@ -352,8 +351,14 @@
       // Add exceptions without commit (i.e: completely manual entries of the journal)
       const nocommitref = exceptions.filter((c) => typeof c.sha == "undefined");
       const allCommitsSorted = nocommitref.concat(allCommits).sort((a, b) => new Date(a.date) - new Date(b.date));
-      // Inclure tous les commits (ne plus restreindre aux seuls utilisateurs listés dans filteringUsers)
-      myCommits = allCommitsSorted;
+      // Ne garder que les commits des utilisateurs listés dans `filteringUsers`
+      myCommits = allCommitsSorted.filter((c) => filteringUsers.includes(c.author));
+
+      // Recalculer les auteurs présents après filtrage et mettre à jour le titre
+      const filteredAuthors = Array.from(new Set(myCommits.map((c) => c.author).filter((a) => a)));
+      const titleAuthorsFiltered = filteredAuthors.length > 5 ? "tous les contributeurs" : filteredAuthors.join(", ");
+      document.getElementById("page-title").innerText = `Journal de ${titleAuthorsFiltered} pour ${repo}`;
+      document.getElementById("project-title").innerText = `Journal de ${titleAuthorsFiltered} pour ${repo}`;
 
       const errors = []; // Commits that don't comply
       // Regrouper les commits par date
@@ -571,7 +576,6 @@
       repoUrl.value = dpdProjects.value;
       await fetchGitBranches();
       const selectedRepo = repos.find((r) => r.url == dpdProjects.value);
-      filteringUsers.push(repoOwner);
       if (typeof selectedRepo.users != "undefined") filteringUsers.push(...selectedRepo.users);
     });
   }
@@ -610,7 +614,6 @@
   /// Load a repo from url manual input
   async function loadSingle() {
     await fetchGitBranches();
-    filteringUsers.push(repoOwner);
   }
   function toHours(minutes) {
     return Math.floor(minutes / 60) + "h" + (minutes % 60).toString().padStart(2, "0") + "m";
