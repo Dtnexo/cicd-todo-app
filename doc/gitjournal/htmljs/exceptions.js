@@ -30,6 +30,6 @@ const exceptions = [
     "date": "2025-11-27T14:35:00.000Z",
     "duration": 20,
     "status": "Done",
-    "author": "Dtnexo"
+    "author": "Evinne8"
   }
 ]
