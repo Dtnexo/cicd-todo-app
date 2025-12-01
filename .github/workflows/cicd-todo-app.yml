@@ -33,7 +33,7 @@ jobs:
 
             # Aller dans le projet
             cd /var/www/todo-app
-            docker compose up -d
+            sudo docker compose up -d
 
             # Aller dans le backend
             cd /var/www/todo-app/backend
