@@ -1,0 +1,54 @@
+name: Deploy to VM
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # -------- Déploiement via SCP --------
+      - name: Upload project to VM
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }} # 172.26.1.19
+          username: ${{ secrets.SSH_USER }} # admin
+          password: ${{ secrets.SSH_PASSWORD }}
+          source: "./code"
+          target: "/var/www/todo-app"
+
+      # -------- Commandes SSH sur la VM --------
+      - name: Run deployment commands on VM
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: |
+            echo "➡ Déploiement en cours sur la VM"
+
+            # Aller dans le projet
+            cd /var/www/todo-app/backend
+
+            # Installer dépendances backend
+            npm install --omit=dev
+
+            # Restart backend (PM2)
+            pm2 restart todo-backend || pm2 start app.js --name todo-backend
+
+            # Déploiement frontend
+            cd /var/www/todo-app/frontend
+            npm install
+            npm run build
+
+            # Copier build dans Nginx
+            rm -rf /var/www/html/*
+            cp -r dist/* /var/www/html/
+
+            echo "✔ Déploiement terminé"
