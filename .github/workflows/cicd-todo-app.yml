@@ -13,23 +13,26 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Upload project to VM
+      - name: Upload project to temp folder
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
           source: "./code"
-          target: "/var/www/todo-app"
+          target: "/home/${{ secrets.SSH_USER }}/deploy-temp"
           overwrite: true
 
-      - name: Run deployment commands on VM
+      - name: Deploy on VM
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
+            sudo rm -rf /var/www/todo-app
+            sudo mv /home/${{ secrets.SSH_USER }}/deploy-temp /var/www/todo-app
+
             cd /var/www/todo-app
             sudo docker compose pull || true
             sudo docker compose up -d --build
@@ -41,6 +44,5 @@ jobs:
             cd /var/www/todo-app/frontend
             npm install
             npm run build
-
             sudo rm -rf /var/www/html/*
             sudo cp -r dist/* /var/www/html/
