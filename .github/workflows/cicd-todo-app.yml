@@ -13,17 +13,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # -------- Déploiement via SCP --------
       - name: Upload project to VM
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.SSH_HOST }} # 172.26.1.19
-          username: ${{ secrets.SSH_USER }} # admin
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
           source: "./code"
           target: "/var/www/todo-app"
 
-      # -------- Commandes SSH sur la VM --------
       - name: Run deployment commands on VM
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -34,6 +32,10 @@ jobs:
             echo "➡ Déploiement en cours sur la VM"
 
             # Aller dans le projet
+            cd /var/www/todo-app
+            docker compose up -d
+
+            # Aller dans le backend
             cd /var/www/todo-app/backend
 
             # Installer dépendances backend
