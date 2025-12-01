@@ -35,7 +35,7 @@ jobs:
             cd /var/www/todo-app
             sudo docker compose up -d
 
-            # Aller dans le backend
+            # Backend
             cd /var/www/todo-app/backend
 
             # Installer dépendances backend
@@ -44,13 +44,13 @@ jobs:
             # Restart backend (PM2)
             pm2 restart todo-backend || pm2 start app.js --name todo-backend
 
-            # Déploiement frontend
+            # Frontend
             cd /var/www/todo-app/frontend
             npm install
             npm run build
 
             # Copier build dans Nginx
-            rm -rf /var/www/html/*
-            cp -r dist/* /var/www/html/
+            sudo rm -rf /var/www/html/*
+            sudo cp -r dist/* /var/www/html/
 
             echo "✔ Déploiement terminé"
