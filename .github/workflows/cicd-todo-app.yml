@@ -21,6 +21,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           source: "./code"
           target: "/var/www/todo-app"
+          overwrite: true
 
       - name: Run deployment commands on VM
         uses: appleboy/ssh-action@v1.0.3
@@ -29,28 +30,17 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
-            echo "➡ Déploiement en cours sur la VM"
-
-            # Aller dans le projet
             cd /var/www/todo-app
-            sudo docker compose up -d
+            sudo docker compose pull || true
+            sudo docker compose up -d --build
 
-            # Backend
             cd /var/www/todo-app/backend
-
-            # Installer dépendances backend
             npm install --omit=dev
-
-            # Restart backend (PM2)
             pm2 restart todo-backend || pm2 start app.js --name todo-backend
 
-            # Frontend
             cd /var/www/todo-app/frontend
             npm install
             npm run build
 
-            # Copier build dans Nginx
             sudo rm -rf /var/www/html/*
             sudo cp -r dist/* /var/www/html/
-
-            echo "✔ Déploiement terminé"
