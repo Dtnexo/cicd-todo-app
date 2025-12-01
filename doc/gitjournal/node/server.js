@@ -26,7 +26,8 @@ app.use(express.json());
 
 function ghHeaders() {
   const h = { Accept: "application/vnd.github+json" };
-  if (process.env.GITHUB_TOKEN) h["Authorization"] = `Bearer ${process.env.GITHUB_TOKEN}`;
+  if (process.env.GITHUB_TOKEN)
+    h["Authorization"] = `Bearer ${process.env.GITHUB_TOKEN}`;
   return h;
 }
 
@@ -51,7 +52,11 @@ async function fetchAllCommits({ owner, repo, branch, since }) {
   let all = [];
   let keep = true;
   while (keep) {
-    const params = new URLSearchParams({ sha: branch, per_page: `${perPage}`, page: `${page}` });
+    const params = new URLSearchParams({
+      sha: branch,
+      per_page: `${perPage}`,
+      page: `${page}`,
+    });
     if (since) params.set("since", since);
     const url = `${GH}/repos/${owner}/${repo}/commits?${params}`;
     const r = await fetch(url, { headers: ghHeaders() });
@@ -68,7 +73,9 @@ function groom(commit) {
   // 1ère ligne=titre, 2e ligne=meta [hh][mm][status], reste=description
   let duration = 0;
   let status = "";
-  const lines = commit.commit.message.split("\n").filter((l) => l.trim() !== "");
+  const lines = commit.commit.message
+    .split("\n")
+    .filter((l) => l.trim() !== "");
   if (lines.length > 1) {
     const metaLine = lines[1];
     const matches = [...metaLine.matchAll(/\[(.*?)\]/g)].map((m) => m[1]);
@@ -93,7 +100,7 @@ function groom(commit) {
     duration,
     status,
     author: commit.author?.login || commit.commit?.author?.name || "?",
-    url: commit.html_url
+    url: commit.html_url,
   };
 }
 
@@ -106,16 +113,23 @@ function totalDuration(commits) {
 
 // helpers de format
 const fmtDayLabel = (d) =>
-  new Intl.DateTimeFormat("fr-FR", { day: "2-digit", month: "short", year: "numeric" }).format(new Date(d));
+  new Intl.DateTimeFormat("fr-FR", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(new Date(d));
 
 const toDayKey = (isoLike) => new Date(isoLike).toISOString().slice(0, 10); // "YYYY-MM-DD"
 
-const sumMinutes = (items) => items.reduce((acc, c) => acc + (c.duration || 0), 0);
+const sumMinutes = (items) =>
+  items.reduce((acc, c) => acc + (c.duration || 0), 0);
 
 // entries: [{ date: ISO, duration: minutes, ... }]
 function groupByDay(entries) {
   // assure l'ordre chronologique croissant (ou inverse si tu préfères)
-  const sorted = [...entries].sort((a, b) => new Date(a.date) - new Date(b.date));
+  const sorted = [...entries].sort(
+    (a, b) => new Date(a.date) - new Date(b.date)
+  );
 
   const groupsMap = new Map(); // préserve l'ordre d'insertion
   for (const c of sorted) {
@@ -135,8 +149,8 @@ function groupByDay(entries) {
       total: {
         minutes,
         h: Math.floor(minutes / 60),
-        m: minutes % 60
-      }
+        m: minutes % 60,
+      },
     });
   }
   return groups;
@@ -172,8 +186,10 @@ function validateException(x) {
   // minimal: name, date (ISO), duration en minutes
   if (!x || typeof x !== "object") return "Objet invalide";
   if (!x.name) return "Champ 'name' requis";
-  if (!x.date || isNaN(new Date(x.date))) return "Champ 'date' invalide (ISO attendu)";
-  if (x.duration == null || isNaN(Number(x.duration))) return "Champ 'duration' requis (minutes)";
+  if (!x.date || isNaN(new Date(x.date)))
+    return "Champ 'date' invalide (ISO attendu)";
+  if (x.duration == null || isNaN(Number(x.duration)))
+    return "Champ 'duration' requis (minutes)";
   return null;
 }
 
@@ -188,7 +204,7 @@ app.get(["/", "/jdt"], async (req, res) => {
     const since = new Intl.DateTimeFormat("fr-FR", {
       day: "2-digit",
       month: "short",
-      year: "numeric"
+      year: "numeric",
     }).format(date);
 
     const branch = process.env.BRANCH || "main";
@@ -211,7 +227,9 @@ app.get(["/", "/jdt"], async (req, res) => {
       return e;
     });
     // Ajouter les entrées "commitless"
-    const allEntriesReady = patched.concat(exc.filter((e) => e.type == "commitless"));
+    const allEntriesReady = patched.concat(
+      exc.filter((e) => e.type == "commitless")
+    );
     // grouper + totaux
     const groups = groupByDay(allEntriesReady);
     const totals = totalDuration(allEntriesReady);
@@ -223,7 +241,7 @@ app.get(["/", "/jdt"], async (req, res) => {
       selectedBranch: branch,
       since,
       groups,
-      totals
+      totals,
     });
   } catch (e) {
     console.error(e);
@@ -274,7 +292,7 @@ async function addNewCommitlessEntry(ex) {
     date: new Date(ex.date).toISOString(),
     duration: Number(ex.duration) || 0,
     status: ex.status || "",
-    author: process.env.USER
+    author: process.env.USER,
   };
   list.push(newentry);
   await writeExceptions(list);
@@ -293,11 +311,47 @@ async function addNewCommitPatchEntry(ex) {
     duration: Number(ex.duration) || 0,
     status: ex.status || "Done",
     author: ex.author || "?",
-    patch: true
+    patch: true,
   };
   list.push(newentry);
   await writeExceptions(list);
 }
+
+import pdf from "html-pdf-node";
+
+app.get("/pdf", async (req, res) => {
+  try {
+    const html = await new Promise((resolve, reject) => {
+      app.render(
+        "index",
+        {
+          owner: "...",
+          repo: "...",
+          selectedBranch: "...",
+          since: "...",
+          groups: [],
+          totals: {},
+        },
+        (err, html) => {
+          if (err) reject(err);
+          else resolve(html);
+        }
+      );
+    });
+
+    const file = { content: html };
+    const options = { format: "A4" };
+
+    const pdfBuffer = await pdf.generatePdf(file, options);
+
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", "attachment; filename=journal.pdf");
+    res.send(pdfBuffer);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Erreur génération PDF");
+  }
+});
 
 app.listen(PORT, () => {
   const url = `http://localhost:${PORT}/jdt`;

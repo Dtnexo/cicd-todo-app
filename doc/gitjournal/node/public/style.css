@@ -1,0 +1,350 @@
+/* =======================================================================
+   🎄 Thème Noël – Fond sombre + Neige CodeMyUI + Rouge/Vert/Or
+======================================================================= */
+
+/* ---------------- GLOBAL ---------------- */
+
+:root {
+  --bg: #1d242e; /* bleu nuit */
+  --card: #263140; /* cards bleu foncé */
+  --card-alt: #2e3c4f; /* variation */
+  --text: #f3f4f6; /* blanc doux */
+  --text-soft: #94a3b8; /* gris bleuté */
+
+  --gold: #f6d86b; /* or lumineux */
+  --green: #5bd68b; /* vert sapin clair */
+  --red: #c94343; /* rouge Noël */
+
+  --border: #3b4756;
+
+  --radius: 12px;
+  --shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+body {
+  margin: 0;
+  padding: 2rem;
+  font-family: "Inter", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ---------------- NEIGE (canvas) ---------------- */
+
+#snowCanvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+}
+
+/* Le reste au-dessus */
+header,
+main,
+table,
+button,
+.topButton {
+  z-index: 2;
+  position: relative;
+}
+
+/* ---------------- HEADER ---------------- */
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-align: center;
+  color: var(--gold);
+  text-shadow: 0 0 12px rgba(246, 216, 107, 0.45);
+  margin-bottom: 2rem;
+}
+
+/* ---------------- INFO ---------------- */
+
+.muted {
+  color: var(--text-soft);
+}
+
+/* ---------------- BOUTONS ---------------- */
+
+#btnDownloadPdf {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 0.9rem;
+  background: var(--red);
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: var(--radius);
+  cursor: pointer;
+  margin-bottom: 1.2rem;
+  box-shadow: var(--shadow);
+}
+#btnDownloadPdf:hover {
+  filter: brightness(1.15);
+}
+
+.topButton {
+  background: var(--green);
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  color: #153121;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  float: right;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+.topButton:hover {
+  transform: scale(1.1);
+}
+
+/* ---------------- TABLE ---------------- */
+
+.christmas-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 12px;
+}
+
+thead th {
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  color: var(--text-soft);
+  letter-spacing: 0.05em;
+  padding-bottom: 0.4rem;
+}
+
+/* cards commits */
+/* =====================================================
+   🎄 Amélioration des cases : séparation VISUELLE
+   ===================================================== */
+
+/* Écart entre les lignes */
+tbody tr[data-sha] {
+  margin-top: 8px;
+  background: #2b3443; /* gris bleu + sombre */
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08); /* séparation visible */
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+/* Séparateurs de colonnes plus visibles */
+td:nth-child(3),
+td:nth-child(4),
+td:nth-child(5) {
+  border-left: 2px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Augmenter la luminosité des cases */
+td {
+  padding: 1.2rem 1.3rem;
+  background: transparent;
+}
+
+/* Alternance légère entre lignes (effet très propre) */
+tbody tr[data-sha]:nth-child(odd) {
+  background: #313c4d;
+}
+
+tbody tr[data-sha]:nth-child(even) {
+  background: #27313f;
+}
+
+/* Intensifier le hover */
+tbody tr[data-sha]:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 10px rgba(255, 255, 255, 0.05);
+}
+
+/* TITRE DU JOUR nettement séparé */
+.day-title {
+  margin-top: 20px;
+  margin-bottom: 8px;
+  background: #404b5e;
+  border-left: 6px solid var(--red);
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  padding: 0.9rem 1rem;
+}
+
+/* ---------------- SOUS-TOTAL ---------------- */
+
+.subtotal-row td {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--gold);
+  font-weight: bold;
+}
+
+/* ---------------- BADGES ---------------- */
+
+.badge {
+  padding: 0.25rem 0.8rem;
+  background: rgba(91, 214, 139, 0.15);
+  border: 1px solid var(--green);
+  border-radius: 20px;
+  color: var(--green);
+  font-weight: bold;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+/* ---------------- MODAL ---------------- */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  justify-content: center;
+  align-items: center;
+  display: none;
+  z-index: 30;
+}
+
+.overlay.active {
+  display: flex;
+}
+
+.modal {
+  background: var(--card);
+  padding: 1.8rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  width: 95%;
+  max-width: 420px;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+body {
+  background: #000;
+}
+
+.lightrope {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  position: absolute;
+  z-index: 1;
+  margin: -55px 0 0 0;
+  padding: 0;
+  pointer-events: none;
+  width: 100%;
+}
+
+.lightrope li {
+  position: relative;
+  animation-fill-mode: both;
+  animation-iteration-count: infinite;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  width: 12px;
+  height: 28px;
+  border-radius: 50%;
+  margin: 20px;
+  background: rgba(0, 247, 165, 1);
+  box-shadow: 0px 4.6666666667px 24px 3px rgba(0, 247, 165, 1);
+  animation-name: flash-1;
+  animation-duration: 2s;
+}
+
+.lightrope li:nth-child(2n + 1) {
+  background: rgba(0, 255, 255, 1);
+  box-shadow: 0px 4.6666666667px 24px 3px rgba(0, 255, 255, 0.5);
+  animation-name: flash-2;
+  animation-duration: 0.4s;
+}
+
+.lightrope li:nth-child(4n + 2) {
+  background: rgba(247, 0, 148, 1);
+  box-shadow: 0px 4.6666666667px 24px 3px rgba(247, 0, 148, 1);
+  animation-name: flash-3;
+  animation-duration: 1.1s;
+}
+
+.lightrope li:nth-child(odd) {
+  animation-duration: 1.8s;
+}
+
+.lightrope li:nth-child(3n + 1) {
+  animation-duration: 1.4s;
+}
+
+.lightrope li::before {
+  content: "";
+  position: absolute;
+  background: #222;
+  width: 10px;
+  height: 9.3333333333px;
+  border-radius: 3px;
+  top: -4.6666666667px;
+  left: 1px;
+}
+
+.lightrope li::after {
+  content: "";
+  top: -14px;
+  left: 9px;
+  position: absolute;
+  width: 52px;
+  height: 18.6666666667px;
+  border-bottom: solid #222 2px;
+  border-radius: 50%;
+}
+
+.lightrope li:last-child::after {
+  content: none;
+}
+
+.lightrope li:first-child {
+  margin-left: -40px;
+}
+
+/* ANIMATIONS */
+
+@keyframes flash-1 {
+  0%,
+  100% {
+    background: rgba(0, 247, 165, 1);
+    box-shadow: 0px 4.6666666667px 24px 3px rgba(0, 247, 165, 1);
+  }
+  50% {
+    background: rgba(0, 247, 165, 0.4);
+    box-shadow: 0px 4.6666666667px 24px 3px rgba(0, 247, 165, 0.2);
+  }
+}
+
+@keyframes flash-2 {
+  0%,
+  100% {
+    background: rgba(0, 255, 255, 1);
+    box-shadow: 0px 4.6666666667px 24px 3px rgba(0, 255, 255, 1);
+  }
+  50% {
+    background: rgba(0, 255, 255, 0.4);
+    box-shadow: 0px 4.6666666667px 24px 3px rgba(0, 255, 255, 0.2);
+  }
+}
+
+@keyframes flash-3 {
+  0%,
+  100% {
+    background: rgba(247, 0, 148, 1);
+    box-shadow: 0px 4.6666666667px 24px 3px rgba(247, 0, 148, 1);
+  }
+  50% {
+    background: rgba(247, 0, 148, 0.4);
+    box-shadow: 0px 4.6666666667px 24px 3px rgba(247, 0, 148, 0.2);
+  }
+}

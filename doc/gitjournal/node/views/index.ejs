@@ -1,16 +1,70 @@
-<main>
+<main class="christmas-container">
   <% if (owner && repo) { %>
-  <header>
-    <h1>Journal de travail <%= owner %>/<%= repo %></h1>
+  <ul class="lightrope">
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+  </ul>
+  <header class="christmas-header">
+    <h1>🎄 Journal de travail <%= owner %>/<%= repo %></h1>
   </header>
+
   <p class="muted">
     Branche: <strong><%= selectedBranch %></strong> • Depuis:
     <strong><%= since || '—' %></strong>
   </p>
 
-  <p><strong>Total:</strong> <%= totals.h %>h <%= totals.m %>m (<%= totals.minutes %> min)</p>
+  <p>
+    <strong>Total:</strong> <%= totals.h %>h <%= totals.m %>m (<%=
+    totals.minutes %> min)
+  </p>
+
   <div id="divAddButton" class="topButton no-print">+</div>
-  <table>
+
+  <button id="btnDownloadPdf" class="no-print" onclick="window.location='/pdf'">
+    Télécharger en PDF
+  </button>
+
+  <table class="christmas-table">
     <thead>
       <tr>
         <th>Date</th>
@@ -24,21 +78,34 @@
 
     <tbody>
       <% groups.forEach(g => { %>
-      <!-- lignes du jour -->
-      <% g.commits.forEach(c => { %> <%- include('_commitRow', { c }) %> <% }) %>
-      <!-- sous-total du jour -->
-      <tr style="background: #fafafa; font-weight: bold">
-        <td colspan="3" style="text-align: right"><%= g.label %></td>
-        <td><%= g.total.h %>h <%= g.total.m %>m</td>
+
+      <!-- TITRE DU JOUR -->
+      <tr class="day-title-row">
+        <td colspan="6">
+          <div class="day-title">📅 <%= g.label %></div>
+        </td>
+      </tr>
+
+      <!-- COMMITS DU JOUR -->
+      <% g.commits.forEach(c => { %> <%- include('_commitRow', { c }) %> <% })
+      %>
+
+      <!-- SOUS-TOTAL -->
+      <tr class="subtotal-row">
+        <td colspan="3" class="subtotal-label"><%= g.label %></td>
+        <td class="subtotal-time"><%= g.total.h %>h <%= g.total.m %>m</td>
         <td colspan="2"></td>
       </tr>
+
       <% }) %>
     </tbody>
   </table>
+
   <%- include('_editEntry') %> <% } else { %>
   <p>Renseignez une URL GitHub pour commencer.</p>
   <% } %>
 </main>
+
 <script>
   // Input form
   const openBtn = document.getElementById("divAddButton");
@@ -53,9 +120,9 @@
     numDuration.value = null;
     const d = new Date();
     const pad = (n) => String(n).padStart(2, "0");
-    datDate.value = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(
-      d.getMinutes()
-    )}`;
+    datDate.value = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(
+      d.getDate()
+    )}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
     overlay.classList.add("active");
     hidSHA.value = "-";
     exceptionId.value = "-";
@@ -89,7 +156,7 @@
         date: new Date(fd.get("date")).toISOString(),
         duration: Number(fd.get("duration")),
         status: fd.get("status"),
-        author: repoOwner
+        author: repoOwner,
       });
     }
     saveData(exceptions);
@@ -103,9 +170,9 @@
       heaInputForm.innerText = "Modification d'une entrée";
       const d = new Date(row.dataset.date);
       const pad = (n) => String(n).padStart(2, "0");
-      datDate.value = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(
-        d.getMinutes()
-      )}`;
+      datDate.value = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(
+        d.getDate()
+      )}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
       // Load form fields with entry's current values
       txtName.value = row.childNodes[3].innerText;
       txtDescription.value = row.childNodes[5].innerText;
