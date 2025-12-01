@@ -1,19 +1,16 @@
-name: Deploy to VM
+name: deploy todo app
 
 on:
-  push:
-    branches: ["main"]
   workflow_dispatch:
 
 jobs:
-  deploy:
+  debug:
     runs-on: self-hosted
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Upload project to temp folder
+      - name: Upload to VM temp
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -23,26 +20,15 @@ jobs:
           target: "/home/${{ secrets.SSH_USER }}/deploy-temp"
           overwrite: true
 
-      - name: Deploy on VM
+      - name: Debug SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
-            sudo rm -rf /var/www/todo-app
-            sudo mv /home/${{ secrets.SSH_USER }}/deploy-temp /var/www/todo-app
+            ls -la /home/${{ secrets.SSH_USER }}
 
-            cd /var/www/todo-app
-            sudo docker compose pull || true
-            sudo docker compose up -d --build
+            ls -la /home/${{ secrets.SSH_USER }}/deploy-temp || echo "deploy-temp introuvable"
 
-            cd /var/www/todo-app/backend
-            npm install --omit=dev
-            pm2 restart todo-backend || pm2 start app.js --name todo-backend
-
-            cd /var/www/todo-app/frontend
-            npm install
-            npm run build
-            sudo rm -rf /var/www/html/*
-            sudo cp -r dist/* /var/www/html/
+            find /home/${{ secrets.SSH_USER }}/deploy-temp -maxdepth 2
