@@ -107,4 +107,52 @@ describe('UserController', () => {
       });
     });
   });
+
+  // -----------------------------------------------
+  // GET USER
+  // -----------------------------------------------
+  describe('getUser', () => {
+    it('devrait retourner 200 + user si trouvé', async () => {
+      // Arrange
+      req.sub = 1;
+
+      const fakeUser = { id: 1, email: 'test@test.com' };
+      User.findOne.mockResolvedValue(fakeUser);
+
+      // Act
+      await UserController.getUser(req, res);
+
+      // Assert
+      expect(User.findOne).toHaveBeenCalledWith({
+        where: { id: 1 },
+        attributes: { exclude: ['id', 'password'] }
+      });
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({ user: fakeUser });
+    });
+
+    it('devrait retourner 404 si introuvable', async () => {
+      // Arrange
+      req.sub = 2;
+      User.findOne.mockResolvedValue(null);
+
+      // Act
+      await UserController.getUser(req, res);
+
+      // Assert
+      expect(res.status).toHaveBeenCalledWith(404);
+    });
+
+    it('devrait retourner 500 en cas de crash', async () => {
+      // Arrange
+      req.sub = 2;
+      User.findOne.mockRejectedValue(new Error());
+
+      // Act
+      await UserController.getUser(req, res);
+
+      // Assert
+      expect(res.status).toHaveBeenCalledWith(500);
+    });
+  }); 
 });
