@@ -21,7 +21,6 @@ jobs:
           source: "./code"
           target: "/home/${{ secrets.SSH_USER }}/deploy-temp"
           overwrite: true
-          strip_components: 1
 
       - name: Deploy on VM
         uses: appleboy/ssh-action@v1.0.3
@@ -31,7 +30,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
             sudo rm -rf /var/www/todo-app
-            sudo mv /home/${{ secrets.SSH_USER }}/deploy-temp /var/www/todo-app
+            sudo mv /home/${{ secrets.SSH_USER }}/deploy-temp/code /var/www/todo-app
 
             cd /var/www/todo-app
             sudo docker compose up -d --build
