@@ -3,6 +3,7 @@
   "version": "1.0.6",
   "main": "app.js",
   "scripts": {
+    "test": "jest",
     "start": "node --trace-warnings --watch app.js",
     "start:e2e": "NODE_ENV=test node app.js",
     "test:dev": "jest --runInBand --watch",
