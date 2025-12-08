@@ -127,3 +127,30 @@ describe('TodoController Unit Tests', () => {
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({ id: 1 });
     });
+
+    /**
+     * TC_U004: Rechercher un todo
+     */
+    test('[200] TC_U004: Devrait rechercher un todo avec succès', async () => {
+        // Arrange
+        req.query.q = 'Meeting';
+        const searchResults = [
+            { id: 1, text: 'Meeting with team', date: '2025-12-01' }
+        ];
+        mockTodoModel.findAll.mockResolvedValue(searchResults);
+
+        // Act
+        await TodoController.getSearchTodo(req, res);
+
+        // Assert
+        expect(mockTodoModel.findAll).toHaveBeenCalledWith(expect.objectContaining({
+            where: expect.arrayContaining([
+                { user_id: 1 },
+                expect.anything()
+            ])
+        }));
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.json).toHaveBeenCalledWith(searchResults);
+    });
+
+});
