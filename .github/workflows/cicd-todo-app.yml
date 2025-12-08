@@ -35,6 +35,8 @@ jobs:
 
             cd /home/${{ secrets.SSH_USER }}/deploy-temp/code/backend
             npm install --omit=dev
+            export DB_URL=${{ secrets.DB_URL }}
+            export PORT=${{ secrets.PORT }}
             npm start
 
             cd /home/${{ secrets.SSH_USER }}/deploy-temp/code/frontend
