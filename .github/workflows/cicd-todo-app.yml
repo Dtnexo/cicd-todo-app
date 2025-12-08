@@ -40,7 +40,7 @@ jobs:
             cd /home/${{ secrets.SSH_USER }}/deploy-temp/code/backend
             npm install --omit=dev
             # Les variables DB_URL et PORT sont passées via 'envs'
-            npm start
+            pm2 restart todo-backend --update-env || pm2 start app.js --name todo-backend
 
             cd /home/${{ secrets.SSH_USER }}/deploy-temp/code/frontend
             npm install
