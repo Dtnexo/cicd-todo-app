@@ -24,7 +24,11 @@ jobs:
 
       - name: Deploy on VM
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          DB_URL: "http://localhost" # Remplacer par votre URL de base de données
+          PORT: "3000"
         with:
+          envs: DB_URL,PORT
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
@@ -35,8 +39,7 @@ jobs:
 
             cd /home/${{ secrets.SSH_USER }}/deploy-temp/code/backend
             npm install --omit=dev
-            export DB_URL=${{ secrets.DB_URL }}
-            export PORT=${{ secrets.PORT }}
+            # Les variables DB_URL et PORT sont passées via 'envs'
             npm start
 
             cd /home/${{ secrets.SSH_USER }}/deploy-temp/code/frontend
