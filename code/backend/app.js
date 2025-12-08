@@ -9,7 +9,7 @@ const { sequelize: db } = require('./config/database');
 const { initModels } = require('./models');
 const router = require('./routes');
 
-const PORT = process.env.PORT || '3000';
+const PORT = process.env.PORT || '3001';
 const ENV = process.env.NODE_ENV || 'development';
 
 let app; // singleton Express app
