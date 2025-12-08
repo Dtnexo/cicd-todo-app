@@ -37,7 +37,7 @@ jobs:
 
             cd backend
             npm install --omit=dev
-            pm2 restart todo-backend || pm2 start app.js --name todo-backend
+            npm start
 
             cd ../frontend
             npm install
