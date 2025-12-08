@@ -72,12 +72,12 @@ const UserController = {
       return res.status(404);
     }
   },
-  deleteCurrentUser: (req, res) => {
+  deleteCurrentUser: async (req, res) => {
     const user_id = req.sub;
     const query = { id: user_id };
     const { User } = req.app.locals.models;
 
-    User.destroy({
+    await User.destroy({
       where: query
     })
       .then(() => {
