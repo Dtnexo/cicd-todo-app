@@ -19,7 +19,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
           source: "./code"
-          target: "/home/${{ secrets.SSH_USER }}/deploy-temp"
+          target: "/home$/{{ secrets.SSH_USER }}/deploy-temp"
           overwrite: true
 
       - name: Deploy on VM
