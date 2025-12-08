@@ -69,3 +69,33 @@ describe('TodoController Unit Tests', () => {
         expect(res.json).toHaveBeenCalledWith(createdTodo);
     });
 
+    /**
+     * TC_U002: Modification d'un Todo
+     */
+    test('[200] TC_U002: Devrait modifier un todo avec succès', async () => {
+        // Arrange
+        req.params.id = 1;
+        req.body = { text: 'Updated Task', completed: true };
+        
+        const existingTodo = {
+            id: 1,
+            text: 'Old Task',
+            completed: false,
+            user_id: 1,
+            save: jest.fn().mockResolvedValue(true) 
+        };
+
+        mockTodoModel.findOne.mockResolvedValue(existingTodo);
+
+        // Act
+        await TodoController.editTodo(req, res);
+
+        // Assert
+        expect(mockTodoModel.findOne).toHaveBeenCalledWith({ where: { id: 1, user_id: 1 } });
+        expect(existingTodo.text).toBe('Updated Task');
+        expect(existingTodo.completed).toBe(true);
+        expect(existingTodo.save).toHaveBeenCalled();
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.json).toHaveBeenCalledWith(existingTodo);
+    });
+
