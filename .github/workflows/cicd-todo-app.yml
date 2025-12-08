@@ -25,7 +25,7 @@ jobs:
       - name: Deploy on VM
         uses: appleboy/ssh-action@v1.0.3
         env:
-          DB_URL: "http://localhost" # Remplacer par votre URL de base de données
+          DB_URL: "mysql://app_user:app_password@localhost:3306/db_todoapp"
           PORT: "3000"
         with:
           envs: DB_URL,PORT
