@@ -29,17 +29,15 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
-            sudo rm -rf /var/www/todo-app
-            sudo mv /home/${{ secrets.SSH_USER }}/deploy-temp/code /var/www/todo-app
 
-            cd /var/www/todo-app
+            cd /home/${{ secrets.SSH_USER }}/deploy-temp/code
             sudo docker compose up -d --build
 
-            cd backend
+            cd /home/${{ secrets.SSH_USER }}/deploy-temp/code/backend
             npm install --omit=dev
             npm start
 
-            cd ../frontend
+            cd /home/${{ secrets.SSH_USER }}/deploy-temp/code/frontend
             npm install
             npm run build
 
