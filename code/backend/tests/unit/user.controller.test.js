@@ -45,11 +45,9 @@ describe('UserController', () => {
     jest.clearAllMocks();
   });
 
-  // -----------------------------------------------
   // CREATE USER
-  // -----------------------------------------------
   describe('createUser', () => {
-    it('devrait créer un utilisateur et retourner 201 + user nettoyé', async () => {
+    test('devrait créer un utilisateur et retourner 201 + user nettoyé', async () => {
       // Arrange
       req.body = { email: 'Test@Test.com', password: 'pass123' };
       bcrypt.hash.mockResolvedValue('hashedPass');
@@ -73,7 +71,7 @@ describe('UserController', () => {
       });
     });
 
-    it("devrait retourner 409 si l'email existe déjà", async () => {
+    test("devrait retourner 409 si l'email existe déjà", async () => {
       // Arrange
       const error = new Error();
       error.name = 'SequelizeUniqueConstraintError';
@@ -91,7 +89,7 @@ describe('UserController', () => {
       });
     });
 
-    it('devrait retourner 409 en cas de création impossible', async () => {
+    test('devrait retourner 409 en cas de création impossible', async () => {
       // Arrange
       User.create.mockRejectedValue(new Error());
 
@@ -108,11 +106,9 @@ describe('UserController', () => {
     });
   });
 
-  // -----------------------------------------------
   // GET USER
-  // -----------------------------------------------
   describe('getUser', () => {
-    it('devrait retourner 200 + user si trouvé', async () => {
+    test('devrait retourner 200 + user si trouvé', async () => {
       // Arrange
       req.sub = 1;
 
@@ -131,7 +127,7 @@ describe('UserController', () => {
       expect(res.json).toHaveBeenCalledWith({ user: fakeUser });
     });
 
-    it('devrait retourner 404 si introuvable', async () => {
+    test('devrait retourner 404 si introuvable', async () => {
       // Arrange
       req.sub = 2;
       User.findOne.mockResolvedValue(null);
@@ -143,7 +139,7 @@ describe('UserController', () => {
       expect(res.status).toHaveBeenCalledWith(404);
     });
 
-    it('devrait retourner 500 en cas de crash', async () => {
+    test('devrait retourner 500 en cas de crash', async () => {
       // Arrange
       req.sub = 2;
       User.findOne.mockRejectedValue(new Error());
@@ -155,4 +151,88 @@ describe('UserController', () => {
       expect(res.status).toHaveBeenCalledWith(500);
     });
   }); 
+
+  // EDIT USER
+  describe('editUser', () => {
+    test('devrait mettre à jour un user et renvoyer 200', async () => {
+      // Arrange
+      req.sub = 1;
+      req.body = { name: 'John', address: 'Rue X' };
+
+      const fakeUser = {
+        name: null,
+        address: null,
+        zip: null,
+        location: null,
+
+        save: jest.fn().mockResolvedValue({
+          get: () => ({
+            email: 'test@test.com',
+            name: 'John',
+            address: 'Rue X'
+          })
+        })
+      };
+
+      User.findOne.mockResolvedValue(fakeUser);
+
+      // Act
+      await UserController.editUser(req, res);
+
+      // Assert
+      expect(fakeUser.save).toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({
+        user: { email: 'test@test.com', name: 'John', address: 'Rue X' }
+      });
+    });
+
+    test('devrait retourner 404 si user non trouvé', async () => {
+      req.sub = 10;
+      User.findOne.mockResolvedValue(null);
+
+      await UserController.editUser(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(404);
+    });
+
+    test('devrait retourner 500 en cas de crash en sauvegarde', async () => {
+      req.sub = 1;
+
+      const fakeUser = {
+        save: jest.fn().mockRejectedValue(new Error())
+      };
+
+      User.findOne.mockResolvedValue(fakeUser);
+
+      await UserController.editUser(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(500);
+    });
+  });
+  
+  // DELETE USER
+  describe('deleteCurrentUser', () => {
+    test('devrait supprimer un user et renvoyer 200', async () => {
+      req.sub = 3;
+      User.destroy.mockResolvedValue(1);
+
+      await UserController.deleteCurrentUser(req, res);
+
+      expect(User.destroy).toHaveBeenCalledWith({
+        where: { id: 3 }
+      });
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({ id: 3 });
+    });
+
+    test('devrait retourner 500 en cas de crash', async () => {
+      req.sub = 3;
+      User.destroy.mockRejectedValue(new Error());
+
+      await UserController.deleteCurrentUser(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(500);
+    });
+  });
 });
