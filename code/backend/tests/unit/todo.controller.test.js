@@ -99,3 +99,14 @@ describe('TodoController Unit Tests', () => {
         expect(res.json).toHaveBeenCalledWith(existingTodo);
     });
 
+    test('[404] TC_U002: Devrait renvoyer 404 si le todo à modifier est introuvable', async () => {
+        // Arrange
+        req.params.id = 999;
+        mockTodoModel.findOne.mockResolvedValue(null);
+
+        // Act
+        await TodoController.editTodo(req, res);
+
+        // Assert
+        expect(res.status).toHaveBeenCalledWith(404);
+    });
