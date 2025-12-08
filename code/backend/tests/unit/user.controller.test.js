@@ -211,4 +211,28 @@ describe('UserController', () => {
     });
   });
   
+  // DELETE USER
+  describe('deleteCurrentUser', () => {
+    test('devrait supprimer un user et renvoyer 200', async () => {
+      req.sub = 3;
+      User.destroy.mockResolvedValue(1);
+
+      await UserController.deleteCurrentUser(req, res);
+
+      expect(User.destroy).toHaveBeenCalledWith({
+        where: { id: 3 }
+      });
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({ id: 3 });
+    });
+
+    test('devrait retourner 500 en cas de crash', async () => {
+      req.sub = 3;
+      User.destroy.mockRejectedValue(new Error());
+
+      await UserController.deleteCurrentUser(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(500);
+    });
+  });
 });
