@@ -110,3 +110,20 @@ describe('TodoController Unit Tests', () => {
         // Assert
         expect(res.status).toHaveBeenCalledWith(404);
     });
+
+    /**
+     * TC_U003: Suppression d'un Todo
+     */
+    test('[200] TC_U003: Devrait supprimer un todo avec succès', async () => {
+        // Arrange
+        req.params.id = 1;
+        mockTodoModel.destroy.mockResolvedValue(1);
+
+        // Act
+        await TodoController.deleteTodo(req, res); 
+
+        // Assert
+        expect(mockTodoModel.destroy).toHaveBeenCalledWith({ where: { id: 1, user_id: 1 } });
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.json).toHaveBeenCalledWith({ id: 1 });
+    });
