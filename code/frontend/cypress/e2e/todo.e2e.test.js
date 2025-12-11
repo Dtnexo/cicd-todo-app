@@ -79,4 +79,16 @@ describe('Todo E2E', () => {
     cy.contains('Update Todo').get('div[class="text-gray-600 dark:text-gray-700 text-center font-bold w-8 border-box whitespace-nowrap select-none pl-1 pr-1 ml-[8px] mr-[15px]"]').should('contain','Done');
   });
 
+  it('should delete a todo', () => {
+    cy.get('.tiptap div[contenteditable]').type('Delete Todo');
+    cy.get('input[name="date"]').type('25/12/2025{enter}', {force: true});
+    cy.contains("Ajouter la tâche").click();
+    cy.get('.tiptap div[contenteditable]').clear();
+    cy.get('ul[role="list"]').should('contain', 'Delete Todo');
+
+    // Find the trash icon
+    cy.get('svg[class="h-5 w-5 stroke-gray-600 dark:stroke-white hover:stroke-black cursor-pointer"]').click();
+
+    cy.contains('Delete Todo').should('not.exist');
+  });
 });

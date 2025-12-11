@@ -35,6 +35,13 @@ const {
 } = useField(name, undefined, {
   initialValue: props.value
 });
+
+import { watch } from 'vue';
+watch(() => props.value, (newVal) => {
+  if (newVal !== undefined && newVal !== inputValue.value) {
+    inputValue.value = newVal;
+  }
+});
 </script>
 
 <template>
