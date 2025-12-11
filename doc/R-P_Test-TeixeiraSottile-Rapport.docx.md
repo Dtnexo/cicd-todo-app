@@ -131,6 +131,54 @@ Les tests unitaires couvrent :
 - le middleware d’authentification
 - les fonctions de validation
 
+# 4. Description des tests backend effectués
+
+Les tests unitaires ont été développés avec Jest, en respectant les règles suivantes :
+
+- mock des modèles Sequelize
+- mock de bcrypt et jsonwebtoken
+- tests isolés (aucun appel à la base de données)
+- couverture des cas d’erreurs + cas valides
+
+## Fonctionallité testés
+
+### 4.1 Auth Controller
+
+Tests effectués :
+
+- Login avec email vide
+- Login avec email inexistant
+- Login avec mauvais mot de passe
+- Signup avec email invalide
+- Signup avec email déjà existant
+- Signup valide renvoyant un token
+
+### 4.2 User Controller
+
+- Lecture du profil utilisateur
+- Mise à jour du profil
+- Gestion du cas où l’utilisateur n’existe pas
+
+### 4.3 Todo Controller
+
+- création de todo avec titre vide → rejet
+- création valide
+- mise à jour inexistante → erreur 404
+
+### 4.4 Middleware d’authentification
+
+- absence de token → 401
+- token valide → next()
+
+---
+
+# 5. Résultats de la campagne de test unitaire et e2e
+
+## Synthèse générale
+
+| Module          | Résultat | Commentaire                           |
+| --------------- | -------- | ------------------------------------- |
+| Auth Controller | Réussi   | Couverture complète des cas critiques |
 
 - d’identifier des faiblesses majeures
 - d'améliorer significativement la validation des données
