@@ -31,5 +31,14 @@ const exceptions = [
     "duration": 20,
     "status": "Done",
     "author": "Evinne8"
+  },
+  {
+    "patch": true,
+    "name": "chore(reviewProf): Discuter avec la prof du projet",
+    "description": "Faire une review avec la prof de notre avance sur le projet",
+    "date": "2025-12-11T15:20:00.000Z",
+    "duration": 20,
+    "status": "Done",
+    "author": "Evinne8"
   }
 ]
