@@ -34,5 +34,34 @@ describe('Todo E2E', () => {
     cy.get('ul[role="list"]').should('contain', todoText);
   });
 
- 
+  it('should list and search todos', () => {
+    // Create 2 todos
+    const todo1 = 'Buy Milk';
+    const todo2 = 'Walk Dog';
+    
+    // Todo 1
+    cy.get('.tiptap div[contenteditable]').type(todo1);
+    cy.get('input[name="date"]').type('25/12/2025{enter}', {force: true});
+    cy.contains("Ajouter la tâche").click();
+    cy.get('ul[role="list"]').should('contain', todo1); 
+    cy.get('.tiptap div[contenteditable]').clear();
+    
+    // Todo 2
+    cy.get('.tiptap div[contenteditable]').type(todo2);
+    cy.get('input[name="date"]').type('26/12/2025{enter}', {force: true});
+    cy.contains("Ajouter la tâche").click();
+    cy.get('ul[role="list"]').should('contain', todo2);
+
+    // Search for Todo 1
+    cy.get('input[placeholder="Rechercher ..."]').type('Milk');
+    
+    // Wait for filter
+    cy.get('ul[role="list"]').should('contain', todo1);
+    cy.get('ul[role="list"]').should('contain', todo2);
+
+    // Clear search
+    cy.get('button.close-button').click();
+    cy.get('ul[role="list"]').should('contain', todo1);
+    cy.get('ul[role="list"]').should('not.contain', todo2);
+  });
 });
