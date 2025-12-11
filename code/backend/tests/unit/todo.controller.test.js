@@ -153,4 +153,27 @@ describe('TodoController Unit Tests', () => {
         expect(res.json).toHaveBeenCalledWith(searchResults);
     });
 
+    /**
+     * TC_U005: Obtenir tous les todos du user
+     */
+    test('[200] TC_U005: Devrait obtenir tous les todos', async () => {
+        // Arrange
+        const userTodos = [
+            { id: 1, text: 'Task 1' },
+            { id: 2, text: 'Task 2' }
+        ];
+        mockTodoModel.findAll.mockResolvedValue(userTodos);
+
+        // Act
+        await TodoController.getAllTodo(req, res);
+
+        // Assert
+        expect(mockTodoModel.findAll).toHaveBeenCalledWith({
+            where: { user_id: 1 },
+            order: [['date', 'ASC']],
+            attributes: { exclude: ['user_id'] }
+        });
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.json).toHaveBeenCalledWith(userTodos);
+    });
 });
