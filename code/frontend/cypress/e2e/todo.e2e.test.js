@@ -64,4 +64,19 @@ describe('Todo E2E', () => {
     cy.get('ul[role="list"]').should('contain', todo1);
     cy.get('ul[role="list"]').should('not.contain', todo2);
   });
+  
+  it('should update state of a todo', () => {
+    // Create todo
+    cy.get('.tiptap div[contenteditable]').type('Update Todo');
+    cy.get('input[name="date"]').type('25/12/2025{enter}', {force: true});
+    cy.contains("Ajouter la tâche").click();
+    cy.get('ul[role="list"]').should('contain', 'Update Todo');
+
+    // Toggle it
+    cy.contains('Update Todo').get('div[class="text-gray-600 dark:text-gray-700 text-center font-bold w-8 border-box whitespace-nowrap select-none pl-1 pr-1 ml-[8px] mr-[15px]"]').click();
+
+    // Verify border color change (red for done) matches class in TodoItem
+    cy.contains('Update Todo').get('div[class="text-gray-600 dark:text-gray-700 text-center font-bold w-8 border-box whitespace-nowrap select-none pl-1 pr-1 ml-[8px] mr-[15px]"]').should('contain','Done');
+  });
+
 });
