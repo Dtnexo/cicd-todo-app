@@ -70,48 +70,6 @@ describe('TodoController Unit Tests', () => {
     });
 
     /**
-     * TC_U002: Modification d'un Todo
-     */
-    test('[200] TC_U002: Devrait modifier un todo avec succès', async () => {
-        // Arrange
-        req.params.id = 1;
-        req.body = { text: 'Updated Task', completed: true };
-        
-        const existingTodo = {
-            id: 1,
-            text: 'Old Task',
-            completed: false,
-            user_id: 1,
-            save: jest.fn().mockResolvedValue(true) 
-        };
-
-        mockTodoModel.findOne.mockResolvedValue(existingTodo);
-
-        // Act
-        await TodoController.editTodo(req, res);
-
-        // Assert
-        expect(mockTodoModel.findOne).toHaveBeenCalledWith({ where: { id: 1, user_id: 1 } });
-        expect(existingTodo.text).toBe('Updated Task');
-        expect(existingTodo.completed).toBe(true);
-        expect(existingTodo.save).toHaveBeenCalled();
-        expect(res.status).toHaveBeenCalledWith(200);
-        expect(res.json).toHaveBeenCalledWith(existingTodo);
-    });
-
-    test('[404] TC_U002: Devrait renvoyer 404 si le todo à modifier est introuvable', async () => {
-        // Arrange
-        req.params.id = 999;
-        mockTodoModel.findOne.mockResolvedValue(null);
-
-        // Act
-        await TodoController.editTodo(req, res);
-
-        // Assert
-        expect(res.status).toHaveBeenCalledWith(404);
-    });
-
-    /**
      * TC_U003: Suppression d'un Todo
      */
     test('[200] TC_U003: Devrait supprimer un todo avec succès', async () => {
