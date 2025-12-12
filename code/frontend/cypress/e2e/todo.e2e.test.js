@@ -76,7 +76,7 @@ describe('Todo E2E', () => {
     cy.contains('li', 'Update Todo')
       .find('div')
       .contains('To Do')
-      .click();
+      .click({ force: true });
 
     // Verify change to "Done" within the same list item
     cy.contains('li', 'Update Todo')
