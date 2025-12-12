@@ -11,8 +11,8 @@ import ConfirmationDialog from '@/components/modals/ConfirmationDialog.vue';
 import AppSpinner from '@/components/AppSpinner.vue';
 
 const userStore = useUser();
-const { currentUser } = userStore;
 const loading = ref(false);
+const success = ref(false);
 const showDialog = ref(false);
 
 const schema = Yup.object().shape({
@@ -23,8 +23,11 @@ const schema = Yup.object().shape({
 const onSubmit = async (formData: Record<string, any>) => {
   try {
     loading.value = true;
+    success.value = false;
     await userStore.updateUser(formData as User).then(() => {
       loading.value = false;
+      success.value = true;
+      setTimeout(() => success.value = false, 3000); // Hide after 3s
     });
   } catch (e) {
     console.error(e);
@@ -45,10 +48,10 @@ const confirmDelete = (value: boolean) => {
   }
 };
 
-const name = computed(() => currentUser?.name);
-const address = computed(() => currentUser?.address);
-const zip = computed(() => currentUser?.zip);
-const location = computed(() => currentUser?.location);
+const name = computed(() => userStore.currentUser?.name);
+const address = computed(() => userStore.currentUser?.address);
+const zip = computed(() => userStore.currentUser?.zip);
+const location = computed(() => userStore.currentUser?.location);
 </script>
 
 <template>
@@ -61,8 +64,12 @@ const location = computed(() => currentUser?.location);
       >
         Mon Profile
       </h1>
+      <!-- Success Message -->
+      <div v-if="success" class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+        <span class="font-medium">Succès!</span> Profile updated.
+      </div>
       <p class="text-left mt-2 text-md text-gray-600 dark:text-gray-400">
-        {{ currentUser?.email }}
+        {{ userStore.currentUser?.email }}
       </p>
       <Form
         @submit="onSubmit"

@@ -65,13 +65,13 @@ const TodoController = {
       return res.status(404);
     }
   },
-  deleteTodo: (req, res) => {
+  deleteTodo: async (req, res) => {
     const user_id = req.sub;
     const todo_id = req.params.id;
     const query = { id: todo_id, user_id: user_id };
     const { Todo } = req.app.locals.models;
 
-    Todo.destroy({
+    await Todo.destroy({
       where: query
     })
       .then(() => {
