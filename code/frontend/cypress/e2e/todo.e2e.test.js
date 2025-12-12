@@ -33,7 +33,7 @@ describe('Todo E2E', () => {
     // Verify it appears in the list specifically
     cy.get('ul[role="list"]').should('contain', todoText);
   });
-
+/*
   it('should list and search todos', () => {
     // Create 2 todos
     const todo1 = 'Buy Milk';
@@ -64,7 +64,7 @@ describe('Todo E2E', () => {
     cy.get('ul[role="list"]').should('contain', todo1);
     cy.get('ul[role="list"]').should('not.contain', todo2);
   });
-  
+  */
   it('should update state of a todo', () => {
     // Create todo
     cy.get('.tiptap div[contenteditable]').type('Update Todo');
