@@ -48,6 +48,10 @@ jobs:
         run: cd code/backend && npm ci
       - name: Install Frontend Deps
         run: cd code/frontend && npm ci
+      - name: Create Dist Mock
+        run: |
+          mkdir -p code/dist
+          echo "Backend Static Mock" > code/dist/index.html
       - name: Start Backend
         env:
           PORT: 3000
