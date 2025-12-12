@@ -71,9 +71,37 @@ jobs:
           cd code/frontend
           npm run e2e:run
 
+  lint-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: "**/package-lock.json"
+      - name: Install Backend Deps
+        run: cd code/backend && npm ci
+      - name: Lint Backend
+        run: cd code/backend && npm run lint
+
+  lint-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: "**/package-lock.json"
+      - name: Install Frontend Deps
+        run: cd code/frontend && npm ci
+      - name: Lint Frontend
+        run: cd code/frontend && npm run lint
+
   deploy:
     runs-on: self-hosted
-    needs: [test-backend, test-frontend]
+    needs: [test-backend, test-frontend, lint-backend, lint-frontend]
 
     steps:
       - uses: actions/checkout@v4
@@ -112,6 +140,14 @@ jobs:
             npm install
             npm run build
 
+            # Copy build to backend dist folder so app.js can serve it on port 3001
+            mkdir -p ../dist
+            cp -r dist/* ../dist/
+
+            # Optional: Populate /var/www/html if Nginx is ever used
             sudo mkdir -p /var/www/html
             sudo rm -rf /var/www/html/*
             sudo cp -r dist/* /var/www/html/
+
+            # Restart Nginx if present, but don't fail if missing
+            sudo systemctl restart nginx || echo "Nginx not found or failed to restart"
