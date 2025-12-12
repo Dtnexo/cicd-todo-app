@@ -72,7 +72,7 @@ jobs:
           npm run e2e:run
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: [test-backend, test-frontend]
 
     steps:
