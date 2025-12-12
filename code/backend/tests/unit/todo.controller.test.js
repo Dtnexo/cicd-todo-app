@@ -1,5 +1,4 @@
 const TodoController = require('../../controllers/todo.controller');
-const { Sequelize } = require('sequelize');
 
 // Mock Sequelize to avoid DB connection issues and support literal
 jest.mock('sequelize', () => {

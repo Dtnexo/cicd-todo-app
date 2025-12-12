@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const { defineConfig } = require('cypress');
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../backend/.env') });
@@ -13,7 +14,7 @@ module.exports = defineConfig({
       USER_EMAIL: "john@example.com",
       USER_PASSWORD: "GRY0xa7jRRPfLy9XxC3v",
     },
-    setupNodeEvents(on, config) {
+    setupNodeEvents(on) {
       on('task', {
         async clearDB() {
           console.log('Cleaning DB...');
