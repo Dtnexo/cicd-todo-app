@@ -9,7 +9,7 @@
     "test:unit": "vitest",
     "e2e:open": "start-server-and-test 'vite dev --port 4173' http://localhost:4173 'cypress open --e2e'",
     "pretest:e2e": "npm run build -- --mode test",
-    "test:e2e:serve": "vite preview --mode test --port 4173",
+    "test:e2e:serve": "vite preview --mode test --port 4173 --host",
     "e2e:run": "start-server-and-test test:e2e:serve http://localhost:4173 'cypress run --browser chrome --e2e'",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
