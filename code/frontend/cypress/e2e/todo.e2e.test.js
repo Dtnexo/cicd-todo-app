@@ -72,11 +72,15 @@ describe('Todo E2E', () => {
     cy.contains("Ajouter la tâche").click();
     cy.get('ul[role="list"]').should('contain', 'Update Todo');
 
-    // Toggle it
-    cy.contains('Update Todo').get('div[class="text-gray-600 dark:text-gray-700 text-center font-bold w-8 border-box whitespace-nowrap select-none pl-1 pr-1 ml-[8px] mr-[15px]"]').click();
+    // Toggle it by finding the "To Do" label within the specific list item
+    cy.contains('li', 'Update Todo')
+      .find('div')
+      .contains('To Do')
+      .click();
 
-    // Verify border color change (red for done) matches class in TodoItem
-    cy.contains('Update Todo').get('div[class="text-gray-600 dark:text-gray-700 text-center font-bold w-8 border-box whitespace-nowrap select-none pl-1 pr-1 ml-[8px] mr-[15px]"]').should('contain','Done');
+    // Verify change to "Done" within the same list item
+    cy.contains('li', 'Update Todo')
+      .should('contain', 'Done');
   });
 
   it('should delete a todo', () => {
@@ -86,8 +90,10 @@ describe('Todo E2E', () => {
     cy.get('.tiptap div[contenteditable]').clear();
     cy.get('ul[role="list"]').should('contain', 'Delete Todo');
 
-    // Find the trash icon
-    cy.get('svg[class="h-5 w-5 stroke-gray-600 dark:stroke-white hover:stroke-black cursor-pointer"]').click();
+    // Find the trash icon within the specific list item
+    cy.contains('li', 'Delete Todo')
+      .find('svg.cursor-pointer') // The trash icon has cursor-pointer class
+      .click();
 
     cy.contains('Delete Todo').should('not.exist');
   });
