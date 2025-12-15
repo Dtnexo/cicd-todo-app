@@ -283,3 +283,56 @@ L’IA n’a **jamais remplacé les tests manuels, l’exécution des tests ni l
 Toutes les décisions finales, corrections de code et validations ont été réalisées par les membres du groupe.
 
 ---
+
+---
+
+# 9. Bilan du projet
+
+## 9.1 Bilan des fonctionnalités testées
+
+L’ensemble des fonctionnalités principales de l’application a été testé :
+
+- Authentification et inscription
+- Gestion du profil utilisateur
+- Gestion des tâches (création, modification, suppression)
+- Recherche
+- Validation des données
+
+Toutes ces fonctionnalités ont pu être validées, et les bugs critiques ont été identifiés puis corrigés côté backend.
+
+## 9.2 Bilan de la campagne de test
+
+La campagne de test a permis :
+
+- d’identifier de nombreux bugs, dont plusieurs critiques
+- d’améliorer significativement la stabilité de l’application
+- de mettre en place une base solide de tests unitaires
+- de renforcer la qualité du code backend
+
+Les tests unitaires ont apporté une réelle valeur ajoutée en détectant des erreurs non visibles immédiatement lors des tests manuels.
+
+## 9.3 Bilan personnel
+
+Ce projet a permis :
+
+- d’acquérir une méthodologie de test structurée
+- de comprendre l’importance de la validation des données
+- de découvrir l’écriture de tests unitaires avec Jest
+- de mieux analyser un projet existant
+- de travailler efficacement en collaboration
+
+---
+
+# 10. Conclusion générale
+
+Ce projet de test de l’application **cicd-todo-app** a permis de mettre en pratique une démarche qualité complète, allant de la détection des bugs jusqu’à leur correction et leur validation.
+
+Grâce aux tests manuels et aux tests unitaires backend :
+
+- les crashs critiques ont été corrigés
+- la stabilité du backend a été renforcée
+- la qualité du code s’est améliorée
+- une base de tests automatisés a été mise en place
+
+Le backend est désormais stable, testé et prêt à être intégré dans une pipeline CI/CD.  
+Ce projet constitue une expérience formatrice et concrète dans le domaine du test logiciel.
