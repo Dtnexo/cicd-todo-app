@@ -26,6 +26,32 @@ describe('Navigation', () => {
     cy.get('#theme-toggle').click();
     cy.get('html').should('not.have.class', 'dark');
   });
+
+  it('je peux accéder aux routes protégées uniquement en étant connecté', () => {
+    // J’essaie d’accéder au profil sans être connecté
+    cy.visit('/profile');
+
+    // Je dois être redirigé vers la page de connexion
+    cy.url().should('include', '/login');
+
+    // Je vérifie que le menu profil n’est pas visible
+    cy.visit('/');
+    cy.get('.profile-menu').should('not.exist');
+
+    // Je crée un utilisateur via l’API
+    cy.request('POST', 'http://localhost:3000/api/user', {
+      email: 'nav@test.com',
+      password: 'Password123!',
+      name: 'Nav User'
+    });
+
+    // Je me connecte avec cet utilisateur
+    cy.visit('/login');
+    cy.get('input[name="email"]').type('nav@test.com');
+    cy.get('input[name="password"]').type('Password123!');
+    cy.get('button[type="submit"]').click();
+
+    // Une fois connecté, le menu profil doit être visible
     cy.get('.profile-menu').should('exist');
   });
 });
