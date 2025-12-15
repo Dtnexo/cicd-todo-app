@@ -179,10 +179,107 @@ Tests effectués :
 | Module          | Résultat | Commentaire                           |
 | --------------- | -------- | ------------------------------------- |
 | Auth Controller | Réussi   | Couverture complète des cas critiques |
+| User Controller | Réussi   | Gestion correcte des erreurs          |
+| Todo Controller | Réussi   | Validation robuste                    |
+| Auth Middleware | Réussi   | Vérification correcte du token        |
+| Validations     | Réussi   | Permet d’éviter des crashs            |
+
+## Erreurs détectées grâce aux tests unitaires
+
+- mauvaise gestion des valeurs nulles dans certains contrôleurs
+- messages d’erreur incohérents
+- besoin d’un module de validation dédié
+
+## Taux de réussite
+
+100% des tests unitaires passant en vert après corrections.
+
+---
+
+# 6. Rapport de tests (statut, conclusion)
+
+## Statut actuel
+
+- Les bugs backend majeurs sont corrigés.
+- Les tests unitaires garantissent un comportement stable et cohérent.
+- Le backend est désormais robuste et prêt pour une pipeline CI/CD.
+
+## Conclusion
+
+La campagne de test a permis :
 
 - d’identifier des faiblesses majeures
 - d'améliorer significativement la validation des données
 - d’éviter plusieurs crashs critiques
 - d’obtenir un backend stable et maintenable
+
+---
+
+# 7. Corrections apportées au code
+
+Suite aux tests manuels et aux tests unitaires réalisés, plusieurs corrections ont été apportées au code afin d’améliorer la stabilité, la robustesse et la qualité globale de l’application.
+
+## 7.1 Corrections backend
+
+Les corrections backend concernent principalement la validation des données et la gestion des erreurs.
+
+- Ajout de validations sur les champs critiques (email, mot de passe, titre de tâche)
+- Gestion correcte des valeurs nulles ou vides
+- Prévention des crashs causés par des chaînes trop longues
+- Amélioration des messages d’erreur retournés par l’API
+- Sécurisation du middleware d’authentification (vérification stricte du token)
+
+Ces corrections ont été validées à l’aide des tests unitaires Jest afin d’éviter toute régression.
+
+## 7.2 Corrections frontend (limitées)
+
+Certaines corrections mineures ont été identifiées côté frontend, notamment :
+
+- amélioration de certains messages d’erreur
+- corrections orthographiques dans l’interface
+- ajustements mineurs de comportement (UX)
+
+Les corrections frontend restent cependant hors du périmètre principal de ce projet, qui était orienté tests.
+
+---
+
+# 8. Usage de l’intelligence artificielle dans le projet
+
+L’intelligence artificielle (ChatGPT/Gemini) a été utilisée comme **outil de support et de référence** tout au long du projet, afin de disposer d’une **base de travail** pour la rédaction, les tests et l’analyse.  
+Elle a permis de gagner du temps tout en conservant une validation humaine à chaque étape.
+
+## 8.1 Aide à la rédaction et à la correction du rapport
+
+L’IA a été utilisée pour :
+
+- structurer le rapport de manière claire et cohérente
+- reformuler certaines sections afin d’améliorer la lisibilité
+- corriger les fautes d’orthographe et de grammaire
+- uniformiser le style d’écriture sur l’ensemble du document
+- aider à la mise en forme du rapport en Markdown
+
+## 8.2 Aide à la mise en forme du rapport
+
+L’intelligence artificielle a été utilisée uniquement comme **outil d’aide à la mise en forme du rapport en Markdown**.
+
+Elle a permis de :
+
+- structurer correctement le document
+- organiser les titres et sous-titres
+- améliorer la lisibilité du rapport
+
+Le contenu, l’analyse des bugs, les tests et les conclusions ont été réalisés par les membres du groupe.
+
+## 8.3 Aide à la création des tests unitaires
+
+L’intelligence artificielle a été utilisée comme **base de réflexion** pour :
+
+- l’écriture des tests unitaires avec Jest
+- la génération de mocks pour les dépendances (bcrypt, jsonwebtoken, modèles Sequelize)
+- la transformation des plans de test manuels en scénarios de tests unitaires backend
+- la vérification de la cohérence des cas de test
+
+L’IA n’a **jamais remplacé les tests manuels, l’exécution des tests ni la validation humaine**.  
+Toutes les décisions finales, corrections de code et validations ont été réalisées par les membres du groupe.
 
 ---
