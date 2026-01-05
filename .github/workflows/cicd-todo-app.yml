@@ -195,5 +195,14 @@ jobs:
             # Copy simple Nginx config to sites-available (assumes default setup)
             sudo cp nginx.conf /etc/nginx/sites-available/default
 
-            # Test and Reload
-            sudo nginx -t && sudo systemctl reload nginx
+            # Force Symlink
+            sudo rm -f /etc/nginx/sites-enabled/default
+            sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+
+            # Restart Nginx if present
+            if systemctl is-active --quiet nginx; then
+                sudo nginx -t && sudo systemctl reload nginx
+            else
+                echo "Nginx not active, trying to start..."
+                sudo systemctl start nginx
+            fi
