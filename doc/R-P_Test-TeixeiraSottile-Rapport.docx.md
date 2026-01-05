@@ -35,7 +35,7 @@ Changement de nom : si on met un nom trop long, l’application crash.
 ## 2.2 NPA / Validation des données
 
 Si on met des lettres dans le NPA, l’application crash au lieu d’afficher une erreur.
-
+v
 Le NPA devrait :
 v
 
@@ -174,11 +174,41 @@ Tests effectués :
 
 # 5. Résultats de la campagne de test unitaire et e2e
 
+Manque capture d'écran des tests unitaires et e2e.
+
 ## Synthèse générale
 
 | Module          | Résultat | Commentaire                           |
 | --------------- | -------- | ------------------------------------- |
 | Auth Controller | Réussi   | Couverture complète des cas critiques |
+| User Controller | Réussi   | Gestion correcte des erreurs          |
+| Todo Controller | Réussi   | Validation robuste                    |
+| Auth Middleware | Réussi   | Vérification correcte du token        |
+| Validations     | Réussi   | Permet d’éviter des crashs            |
+
+## Erreurs détectées grâce aux tests unitaires
+
+- mauvaise gestion des valeurs nulles dans certains contrôleurs
+- messages d’erreur incohérents
+- besoin d’un module de validation dédié
+
+## Taux de réussite
+
+100% des tests unitaires passant en vert après corrections.
+
+---
+
+# 6. Rapport de tests (statut, conclusion)
+
+## Statut actuel
+
+- Les bugs backend majeurs sont corrigés.
+- Les tests unitaires garantissent un comportement stable et cohérent.
+- Le backend est désormais robuste et prêt pour une pipeline CI/CD.
+
+## Conclusion
+
+La campagne de test a permis :
 
 - d’identifier des faiblesses majeures
 - d'améliorer significativement la validation des données
@@ -186,3 +216,90 @@ Tests effectués :
 - d’obtenir un backend stable et maintenable
 
 ---
+
+# 7. Corrections apportées au code
+
+Suite aux tests manuels et aux tests unitaires réalisés, plusieurs corrections ont été apportées au code afin d’améliorer la stabilité, la robustesse et la qualité globale de l’application.
+
+## 7.1 Corrections backend
+
+Les corrections backend concernent principalement la validation des données et la gestion des erreurs.
+
+- Ajout de validations sur les champs critiques (email, mot de passe, titre de tâche)
+- Gestion correcte des valeurs nulles ou vides
+- Prévention des crashs causés par des chaînes trop longues
+- Amélioration des messages d’erreur retournés par l’API
+- Sécurisation du middleware d’authentification (vérification stricte du token)
+
+Ces corrections ont été validées à l’aide des tests unitaires Jest afin d’éviter toute régression.
+
+## 7.2 Corrections frontend (limitées)
+
+Certaines corrections mineures ont été identifiées côté frontend, notamment :
+
+- amélioration de certains messages d’erreur
+- corrections orthographiques dans l’interface
+- ajustements mineurs de comportement (UX)
+
+Les corrections frontend restent cependant hors du périmètre principal de ce projet, qui était orienté tests.
+
+---
+
+# 8. Usage de l’intelligence artificielle dans le projet
+
+L’intelligence artificielle (ChatGPT/Gemini) a été utilisée comme **outil de support et de référence** tout au long du projet, afin de disposer d’une **base de travail** pour la rédaction, les tests et l’analyse.  
+Elle a permis de gagner du temps tout en conservant une validation humaine à chaque étape.
+
+## 8.1 Aide à la rédaction et à la correction du rapport
+
+L’IA a été utilisée pour :
+
+- reformuler certaines sections afin d’améliorer la lisibilité
+- corriger les fautes d’orthographe et de grammaire
+- uniformiser le style d’écriture sur l’ensemble du document
+- aider à la mise en forme du rapport en Markdown
+
+## 8.3 Aide à la création des tests unitaires
+
+L’intelligence artificielle a été utilisée comme **base de réflexion** pour :
+
+- l’écriture des tests unitaires avec Jest
+- la génération de mocks pour les dépendances (bcrypt, jsonwebtoken, modèles Sequelize)
+
+---
+
+# 9. Bilan du projet
+
+## 9.1 Bilan des fonctionnalités testées
+
+L’ensemble des fonctionnalités principales de l’application a été testé :
+
+- Authentification et inscription
+- Gestion du profil utilisateur
+- Gestion des tâches (création, modification, suppression)
+- Recherche
+- Validation des données
+
+Toutes ces fonctionnalités ont pu être validées, et les bugs critiques ont été identifiés puis corrigés côté backend.
+
+## 9.2 Bilan de la campagne de test
+
+La campagne de test a permis :
+
+- d’identifier de nombreux bugs, dont plusieurs critiques
+- d’améliorer significativement la stabilité de l’application
+- de mettre en place une base solide de tests unitaires
+- de renforcer la qualité du code backend
+
+## 9.3 Bilan personnel
+
+Ce projet a permis :
+
+- d’acquérir une méthodologie de test structurée
+- de comprendre l’importance de la validation des données
+- de découvrir l’écriture de tests unitaires et e2e avec Jest et Cypress
+- de travailler efficacement en collaboration
+
+---
+
+# 10. Conclusion générale

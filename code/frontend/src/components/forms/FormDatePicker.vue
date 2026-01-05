@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, defineAsyncComponent } from 'vue';
-import {} from 'vue';
+
 import { useDark } from '@vueuse/core';
 // reduce bundle size by using defineAsyncComponent
 const VueDatePicker = defineAsyncComponent(() => import('@vuepic/vue-datepicker'));
@@ -57,6 +57,7 @@ const value = computed({
     position="left"
     locale="fr"
     format="dd/MM/yyyy"
+    text-input
   >
     <template #dp-input="{ value, onInput }">
       <div class="flex flex-end items-baseline flex-row justify-start">

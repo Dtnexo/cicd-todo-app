@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import * as Yup from 'yup';
-import { Form } from 'vee-validate';
+import { useForm } from 'vee-validate';
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 
@@ -19,8 +19,11 @@ const schema = Yup.object().shape({
   password: Yup.string().required('Vous devez renseigner ce champ')
 });
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const onSubmit = async (formValues: Record<string, any>) => {
+const { handleSubmit } = useForm({
+  validationSchema: schema,
+});
+
+const onSubmit = handleSubmit(async (formValues) => {
   try {
     loading.value = true;
     await userStore.login(formValues as LoginForm).then(() => {
@@ -32,7 +35,7 @@ const onSubmit = async (formValues: Record<string, any>) => {
     errorMsg.value = e as string;
     loading.value = false;
   } 
-};
+});
 </script>
 
 <template>
@@ -51,7 +54,7 @@ const onSubmit = async (formValues: Record<string, any>) => {
           {{ errorMsg }}</span
         >
       </p>
-      <Form @submit="onSubmit" :validation-schema="schema" class="space-y-4 md:space-y-6">
+      <form @submit="onSubmit" class="space-y-4 md:space-y-6">
         <div>
           <FormInput name="email" type="email" label="Votre email" />
         </div>
@@ -81,7 +84,7 @@ const onSubmit = async (formValues: Record<string, any>) => {
             >Créer votre compte</a
           >
         </p>
-      </Form>
+      </form>
     </div>
   </div>
 </template>
