@@ -183,26 +183,27 @@ jobs:
                 sudo apt-get install -y nginx
             fi
 
-            # Ensure Nginx is enabled and running
-            sudo systemctl enable nginx
+            # Stop Nginx to ensure clean state
+            sudo systemctl stop nginx
+
+            # CLEANUP: Remove default config and any others to prevent conflicts
+            sudo rm -rf /etc/nginx/sites-enabled/*
+            sudo rm -rf /etc/nginx/sites-available/default
+
+            # Deploy Config as 'todo-app'
+            sudo cp nginx.conf /etc/nginx/sites-available/todo-app
+
+            # Enable Config
+            sudo ln -s /etc/nginx/sites-available/todo-app /etc/nginx/sites-enabled/todo-app
+
+            # PERMISSIONS: Ensure Nginx can read the files
+            sudo chown -R www-data:www-data /var/www/html
+            sudo chmod -R 755 /var/www/html
+
+            # Start Nginx
             sudo systemctl start nginx
 
-            # specific firewall rule for port 80 just in case
+            # Allow Firewall
             if command -v ufw &> /dev/null; then
                 sudo ufw allow 80/tcp
-            fi
-
-            # Copy simple Nginx config to sites-available (assumes default setup)
-            sudo cp nginx.conf /etc/nginx/sites-available/default
-
-            # Force Symlink
-            sudo rm -f /etc/nginx/sites-enabled/default
-            sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
-
-            # Restart Nginx if present
-            if systemctl is-active --quiet nginx; then
-                sudo nginx -t && sudo systemctl reload nginx
-            else
-                echo "Nginx not active, trying to start..."
-                sudo systemctl start nginx
             fi
