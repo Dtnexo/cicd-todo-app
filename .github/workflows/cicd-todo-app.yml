@@ -187,8 +187,12 @@ jobs:
             sudo systemctl stop nginx
 
             # CLEANUP: Remove default config and any others to prevent conflicts
-            sudo rm -rf /etc/nginx/sites-enabled/*
-            sudo rm -rf /etc/nginx/sites-available/default
+            sudo rm -f /etc/nginx/sites-enabled/default
+            sudo rm -f /etc/nginx/sites-enabled/todo-app
+            sudo rm -f /etc/nginx/sites-available/default
+
+            # Debug: Check if nginx.conf exists
+            ls -l nginx.conf
 
             # Deploy Config as 'todo-app'
             sudo cp nginx.conf /etc/nginx/sites-available/todo-app
@@ -199,6 +203,9 @@ jobs:
             # PERMISSIONS: Ensure Nginx can read the files
             sudo chown -R www-data:www-data /var/www/html
             sudo chmod -R 755 /var/www/html
+
+            # Test Config before Start
+            sudo nginx -t
 
             # Start Nginx
             sudo systemctl start nginx
