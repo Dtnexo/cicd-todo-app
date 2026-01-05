@@ -177,6 +177,9 @@ jobs:
             # Warning: Using sudo for copy might affect permissions, but we are root or sudoer
             sudo cp -r dist/* /var/www/html/
 
+            # Go back to 'code' directory where nginx.conf is located
+            cd ..
+
             # Install Nginx if not present
             if ! command -v nginx &> /dev/null; then
                 sudo apt-get update
