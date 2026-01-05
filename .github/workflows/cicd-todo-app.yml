@@ -177,12 +177,23 @@ jobs:
             # Warning: Using sudo for copy might affect permissions, but we are root or sudoer
             sudo cp -r dist/* /var/www/html/
 
+            # Install Nginx if not present
+            if ! command -v nginx &> /dev/null; then
+                sudo apt-get update
+                sudo apt-get install -y nginx
+            fi
+
+            # Ensure Nginx is enabled and running
+            sudo systemctl enable nginx
+            sudo systemctl start nginx
+
+            # specific firewall rule for port 80 just in case
+            if command -v ufw &> /dev/null; then
+                sudo ufw allow 80/tcp
+            fi
+
             # Copy simple Nginx config to sites-available (assumes default setup)
             sudo cp nginx.conf /etc/nginx/sites-available/default
 
-            # Restart Nginx if present
-            if systemctl is-active --quiet nginx; then
-                sudo nginx -t && sudo systemctl reload nginx
-            else
-                echo "Nginx not active, skipping reload"
-            fi
+            # Test and Reload
+            sudo nginx -t && sudo systemctl reload nginx
