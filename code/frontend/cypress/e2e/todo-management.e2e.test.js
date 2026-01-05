@@ -36,7 +36,7 @@ describe('Gestion des tâches', () => {
     cy.get('ul[role="list"]').should('contain', todo1).and('contain', todo2);
 
     // Je filtre avec la recherche
-    cy.get('input[placeholder="Rechercher ..."]').type('Groceries');
+    cy.get('input[placeholder="Rechercher ..."]').type('Groceries', { delay: 200 });
     
     // Seule la tâche correspondante doit rester visible
     cy.get('ul[role="list"]').should('contain', todo1);
