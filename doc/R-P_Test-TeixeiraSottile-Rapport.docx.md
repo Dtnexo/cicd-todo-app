@@ -35,7 +35,7 @@ Changement de nom : si on met un nom trop long, l’application crash.
 ## 2.2 NPA / Validation des données
 
 Si on met des lettres dans le NPA, l’application crash au lieu d’afficher une erreur.
-
+v
 Le NPA devrait :
 v
 
@@ -174,6 +174,8 @@ Tests effectués :
 
 # 5. Résultats de la campagne de test unitaire et e2e
 
+Manque capture d'écran des tests unitaires et e2e.
+
 ## Synthèse générale
 
 | Module          | Résultat | Commentaire                           |
@@ -252,23 +254,10 @@ Elle a permis de gagner du temps tout en conservant une validation humaine à ch
 
 L’IA a été utilisée pour :
 
-- structurer le rapport de manière claire et cohérente
 - reformuler certaines sections afin d’améliorer la lisibilité
 - corriger les fautes d’orthographe et de grammaire
 - uniformiser le style d’écriture sur l’ensemble du document
 - aider à la mise en forme du rapport en Markdown
-
-## 8.2 Aide à la mise en forme du rapport
-
-L’intelligence artificielle a été utilisée uniquement comme **outil d’aide à la mise en forme du rapport en Markdown**.
-
-Elle a permis de :
-
-- structurer correctement le document
-- organiser les titres et sous-titres
-- améliorer la lisibilité du rapport
-
-Le contenu, l’analyse des bugs, les tests et les conclusions ont été réalisés par les membres du groupe.
 
 ## 8.3 Aide à la création des tests unitaires
 
@@ -276,13 +265,6 @@ L’intelligence artificielle a été utilisée comme **base de réflexion** pou
 
 - l’écriture des tests unitaires avec Jest
 - la génération de mocks pour les dépendances (bcrypt, jsonwebtoken, modèles Sequelize)
-- la transformation des plans de test manuels en scénarios de tests unitaires backend
-- la vérification de la cohérence des cas de test
-
-L’IA n’a **jamais remplacé les tests manuels, l’exécution des tests ni la validation humaine**.  
-Toutes les décisions finales, corrections de code et validations ont été réalisées par les membres du groupe.
-
----
 
 ---
 
@@ -309,30 +291,15 @@ La campagne de test a permis :
 - de mettre en place une base solide de tests unitaires
 - de renforcer la qualité du code backend
 
-Les tests unitaires ont apporté une réelle valeur ajoutée en détectant des erreurs non visibles immédiatement lors des tests manuels.
-
 ## 9.3 Bilan personnel
 
 Ce projet a permis :
 
 - d’acquérir une méthodologie de test structurée
 - de comprendre l’importance de la validation des données
-- de découvrir l’écriture de tests unitaires avec Jest
-- de mieux analyser un projet existant
+- de découvrir l’écriture de tests unitaires et e2e avec Jest et Cypress
 - de travailler efficacement en collaboration
 
 ---
 
 # 10. Conclusion générale
-
-Ce projet de test de l’application **cicd-todo-app** a permis de mettre en pratique une démarche qualité complète, allant de la détection des bugs jusqu’à leur correction et leur validation.
-
-Grâce aux tests manuels et aux tests unitaires backend :
-
-- les crashs critiques ont été corrigés
-- la stabilité du backend a été renforcée
-- la qualité du code s’est améliorée
-- une base de tests automatisés a été mise en place
-
-Le backend est désormais stable, testé et prêt à être intégré dans une pipeline CI/CD.  
-Ce projet constitue une expérience formatrice et concrète dans le domaine du test logiciel.
