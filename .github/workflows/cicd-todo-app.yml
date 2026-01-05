@@ -177,9 +177,12 @@ jobs:
             # Warning: Using sudo for copy might affect permissions, but we are root or sudoer
             sudo cp -r dist/* /var/www/html/
 
+            # Copy simple Nginx config to sites-available (assumes default setup)
+            sudo cp nginx.conf /etc/nginx/sites-available/default
+
             # Restart Nginx if present
             if systemctl is-active --quiet nginx; then
-                sudo systemctl restart nginx
+                sudo nginx -t && sudo systemctl reload nginx
             else
-                echo "Nginx not active, skipping restart"
+                echo "Nginx not active, skipping reload"
             fi
