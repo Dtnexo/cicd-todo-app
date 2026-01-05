@@ -5,14 +5,27 @@ on:
     branches: ["main"]
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test-backend:
-    runs-on: ubuntu-latest
+    name: Test Backend (${{ matrix.os }}, Node ${{ matrix.node-version }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node-version: [18.x, 20.x, 22.x]
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: ${{ matrix.node-version }}
           cache: "npm"
           cache-dependency-path: "**/package-lock.json"
       - name: Install Backend Deps
@@ -21,7 +34,12 @@ jobs:
         run: cd code/backend && npm run test:ci
 
   test-frontend:
+    name: Test Frontend (ubuntu-latest, Node ${{ matrix.node-version }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
     services:
       mysql:
         image: mysql:8.0
@@ -41,7 +59,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: ${{ matrix.node-version }}
           cache: "npm"
           cache-dependency-path: "**/package-lock.json"
       - name: Install Backend Deps
@@ -102,7 +120,7 @@ jobs:
   deploy:
     runs-on: self-hosted
     needs: [test-backend, test-frontend, lint-backend, lint-frontend]
-
+    if: success()
     steps:
       - uses: actions/checkout@v4
 
@@ -127,27 +145,41 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
+            # Update permissions
+            chmod -R u+w /home/${{ secrets.SSH_USER }}/deploy-temp/code
 
+            # Start/Update Database Containers
             cd /home/${{ secrets.SSH_USER }}/deploy-temp/code
             sudo docker compose up -d --build
 
+            # Prepare Backend & PM2
             cd /home/${{ secrets.SSH_USER }}/deploy-temp/code/backend
-            npm install --omit=dev
-            # Les variables DB_URL et PORT sont passées via 'envs'
+            npm ci --omit=dev
+
+            # Restart or Start Backend
             pm2 restart todo-backend --update-env || pm2 start app.js --name todo-backend
 
+            # Build Frontend
             cd /home/${{ secrets.SSH_USER }}/deploy-temp/code/frontend
-            npm install
+            npm ci
             npm run build
 
-            # Copy build to backend dist folder so app.js can serve it on port 3001
+            # Deploy Frontend build to Backend's dist folder
+            # Ensure parent dist folder exists
             mkdir -p ../dist
+            # Clean old build
+            rm -rf ../dist/*
+            # Copy new build
             cp -r dist/* ../dist/
 
             # Optional: Populate /var/www/html if Nginx is ever used
             sudo mkdir -p /var/www/html
-            sudo rm -rf /var/www/html/*
+            # Warning: Using sudo for copy might affect permissions, but we are root or sudoer
             sudo cp -r dist/* /var/www/html/
 
-            # Restart Nginx if present, but don't fail if missing
-            sudo systemctl restart nginx || echo "Nginx not found or failed to restart"
+            # Restart Nginx if present
+            if systemctl is-active --quiet nginx; then
+                sudo systemctl restart nginx
+            else
+                echo "Nginx not active, skipping restart"
+            fi
