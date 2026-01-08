@@ -1,10 +1,128 @@
-title: "Rapport de Test – cicd-todo-app"
-
-author: "Evan Sottile & Diego Teixeira – GRP3D"
-
-date: "2025"
-
 ---
+title: "Rapport de Test – cicd-todo-app"
+author: "Evan Sottile & Diego Teixeira – GRP3D"
+date: "2025"
+---
+
+<style>
+    /* CSS pour forcer les sauts de page avec l'extension yzane */
+    .page-break {
+        page-break-after: always;
+    }
+    
+    /* Reset body padding to prevent content shift */
+    body, .markdown-body {
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: none !important;
+        width: 75% !important;
+        height: 75% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Hide header/footer ONLY on first page by removing margins */
+    @page :first {
+        margin: 0;
+    }
+
+    /* Cover Page Styling */
+    .cover-page {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 40px; /* Padding to compensate for 0 margin */
+        height: 90vh; /* Reduced to prevent blank page */
+        width: 75%;
+        height: 75%;
+        text-align: center;
+        box-sizing: border-box;
+    }
+    .cover-title {
+        font-size: 36px;
+        font-weight: bold;
+        margin-bottom: 50px;
+        color: #2c3e50;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .cover-image {
+        max-width: 100%;
+        width: 400px;
+        margin-bottom: 50px;
+        border-radius: 4px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .cover-info {
+        font-size: 16px;
+        line-height: 1.8;
+        color: #444;
+        text-align: center;
+        border-top: 2px solid #eee;
+        padding-top: 20px;
+        width: 75%;
+        height: 75%;
+    }
+    .cover-info strong {
+        color: #2c3e50;
+    }
+    
+    h1 { color: #2c3e50; border-bottom: 2px solid #2c3e50; padding-bottom: 10px; }
+    h2 { color: #34495e; margin-top: 30px; }
+    h3 { color: #576574; margin-top: 25px; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+    img { max-width: 100%; border: 1px solid #ddd; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); }
+</style>
+
+<div class="cover-page">
+    <div class="cover-title">Rapport de Test – cicd-todo-app</div>
+    <img src="./assets/cover.png" class="cover-image" alt="Cover Image">
+    <div class="cover-info">
+        <p>Evan Sottile & Diego Teixeira – GRP3D</p>
+        <p>Lausanne - Vennes</p>
+        <p>Aurélie Curchod</p>
+    </div>
+</div>
+
+<div class="page-break"></div>
+
+# Table des matières
+
+1. [Introduction](#1-introduction)
+   - 1.1 [Titre](#11-titre)
+   - 1.2 [Description](#12-description)
+2. [Tests manuels et classification des bugs](#2-tests-manuels-et-classification-des-bugs)
+   - 2.1 [Compte / Profil / Authentification](#21-compte--profil--authentification)
+   - 2.2 [NPA / Validation des données](#22-npa--validation-des-données)
+   - 2.3 [Tâches (TODO)](#23-tâches-todo)
+   - 2.4 [Description des tâches](#24-description-des-tâches)
+   - 2.5 [Barre de recherche](#25-barre-de-recherche)
+   - 2.6 [Interface / Texte général](#26-interface--texte-général)
+   - 2.7 [Classification des bugs](#27-classification-des-bugs)
+3. [Stratégie et plans de tests](#3-stratégie-et-plans-de-tests)
+   - 3.1 [Tests manuels](#31-tests-manuels)
+   - 3.2 [Tests unitaires backend (Jest)](#32-tests-unitaires-backend-jest)
+4. [Description des tests backend et E2E effectués](#4-description-des-tests-backend-et-e2e-effectués)
+5. [Résultats de la campagne de test unitaire et e2e](#5-résultats-de-la-campagne-de-test-unitaire-et-e2e)
+   - 5.1 [Tests Unitaires : Echecs et Rollback](#51-tests-unitaires--echecs-et-rollback)
+   - 5.2 [Tests E2E et Problème de Recherche (Flaky Test)](#52-tests-e2e-et-problème-de-recherche-flaky-test)
+   - 5.3 [Couverture de code (Coverage)](#53-couverture-de-code-coverage)
+6. [Rapport de tests (statut, conclusion)](#6-rapport-de-tests-statut-conclusion)
+7. [Corrections apportées au code](#7-corrections-apportées-au-code)
+   - 7.1 [Corrections backend](#71-corrections-backend)
+   - 7.2 [Corrections frontend (limitées)](#72-corrections-frontend-limitées)
+8. [Usage de l’intelligence artificielle dans le projet](#8-usage-de-lintelligence-artificielle-dans-le-projet)
+   - 8.1 [Aide à la rédaction et à la correction du rapport](#81-aide-à-la-rédaction-et-à-la-correction-du-rapport)
+   - 8.3 [Aide à la création des tests unitaires](#83-aide-à-la-création-des-tests-unitaires)
+9. [Bilan du projet](#9-bilan-du-projet)
+   - 9.1 [Bilan des fonctionnalités testées](#91-bilan-des-fonctionnalités-testées)
+   - 9.2 [Bilan de la campagne de test](#92-bilan-de-la-campagne-de-test)
+   - 9.3 [Bilan personnel](#93-bilan-personnel)
+10. [Conclusion générale](#10-conclusion-générale)
+
+<div class="page-break"></div>
 
 # 1. Introduction
 
@@ -35,9 +153,8 @@ Changement de nom : si on met un nom trop long, l’application crash.
 ## 2.2 NPA / Validation des données
 
 Si on met des lettres dans le NPA, l’application crash au lieu d’afficher une erreur.
-v
+
 Le NPA devrait :
-v
 
 - accepter uniquement des chiffres
 - afficher un message d’erreur clair
@@ -131,7 +248,7 @@ Les tests unitaires couvrent :
 - le middleware d’authentification
 - les fonctions de validation
 
-# 4. Description des tests backend effectués
+# 4. Description des tests backend et E2E effectués
 
 Les tests unitaires ont été développés avec Jest, en respectant les règles suivantes :
 
@@ -170,11 +287,44 @@ Tests effectués :
 - absence de token → 401
 - token valide → next()
 
+### 4.5 Description des tests E2E (Cypress)
+
+Nous avons également mis en place des tests de bout en bout (E2E) pour valider les scénarios utilisateurs critiques :
+
+- **Authentification :** Inscription, Login, Logout.
+- **Gestion des tâches :** Création et suppression de tâches.
+- **Recherche :** Filtrage des tâches via la barre de recherche.
+
 ---
 
 # 5. Résultats de la campagne de test unitaire et e2e
 
-Manque capture d'écran des tests unitaires et e2e.
+## 5.1 Tests Unitaires : Echecs et Rollback
+
+Lors de la mise en place des tests, nous avons rencontré des échecs significatifs lors d'une tentative de refactoring du backend.
+
+![Capture d'écran test unitaire échoué](./assets/jest-failed.png)
+_(Figure 1 : Capture d'écran montrant les tests unitaires échoués)_
+
+**Explication du Rollback :**
+Face à l'instabilité introduite par ces modifications, nous avons décidé d'effectuer un **Rollback** complet du code backend vers la dernière version stable. Plutôt que d'adapter les tests à un code buggé, nous avons restauré le code fonctionnel et adapté nos tests pour garantir cette stabilité.
+
+## 5.2 Tests E2E et Problème de Recherche (Flaky Test)
+
+Les tests Cypress passent globalement, mais nous avons identifié un comportement instable.
+
+![Capture d'écran tests E2E Cypress](./assets/cypress-e2e.png)
+_(Figure 2 : Capture d'écran de l'interface Cypress)_
+
+**Bug aléatoire sur la recherche :**
+Le test de recherche d'une tâche échoue de manière aléatoire pour une raison inexpliquée (Flaky Test). Il semble que Cypress tente de vérifier le résultat du filtre avant que le DOM ne soit totalement mis à jour par Vue.js, ou qu'il y ait une latence réseau imprévisible.
+
+## 5.3 Couverture de code (Coverage)
+
+Voici le rapport HTML généré par Jest :
+
+![Capture d'écran Coverage HTML](./assets/coverage-report.png)
+_(Figure 3 : Rapport de couverture HTML)_
 
 ## Synthèse générale
 
@@ -194,7 +344,7 @@ Manque capture d'écran des tests unitaires et e2e.
 
 ## Taux de réussite
 
-100% des tests unitaires passant en vert après corrections.
+100% des tests unitaires passant en vert après corrections et rollback.
 
 ---
 
@@ -303,3 +453,7 @@ Ce projet a permis :
 ---
 
 # 10. Conclusion générale
+
+Pour conclure, ce projet réalisé dans le cadre du module ICT-450 nous a permis d'appréhender la réalité de l'assurance qualité logicielle. Nous sommes partis d'une application fonctionnelle mais fragile pour aboutir à une version sécurisée par des tests unitaires et monitorée par des tests E2E.
+
+Les difficultés rencontrées, notamment la nécessité d'effectuer un **Rollback** sur le backend suite à des tests échoués et la gestion des tests E2E aléatoires ("flaky tests"), ont été formatrices. Elles soulignent l'importance de maintenir un environnement de test rigoureux avant toute intégration continue. Le rapport démontre que l'application est désormais saine, documentée et prête pour les étapes suivantes de déploiement.

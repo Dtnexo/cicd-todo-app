@@ -1,0 +1,10 @@
+{
+    "markdown-pdf.format": "A4",
+    "markdown-pdf.margin.top": "2cm",
+    "markdown-pdf.margin.bottom": "3.5cm",
+    "markdown-pdf.margin.right": "2cm",
+    "markdown-pdf.margin.left": "2cm",
+    "markdown-pdf.displayHeaderFooter": true,
+    "markdown-pdf.headerTemplate": "<div style=\"font-size: 9px; font-family: Arial, sans-serif; width: 100%; text-align: center; border-bottom: 1px solid #000; padding-bottom: 5px; margin: 0 1cm;\"><span style=\"font-weight: bold;\">Rapport de Test – cicd-todo-app</span></div>",
+    "markdown-pdf.footerTemplate": "<div style=\"font-size: 9px; font-family: Arial, sans-serif; width: 100%; margin: 1cm 1cm 0 1cm; border-top: 1px solid #000; padding-top: 5px; display: flex; justify-content: space-between;\"><span style=\"flex: 1; text-align: left;\">R-P_Test-TeixeiraSottile-Rapport.docx</span><span style=\"flex: 1; text-align: center;\">Page <span class='pageNumber'></span> / <span class='totalPages'></span></span><span style=\"flex: 1; text-align: right;\">Auteurs : Evan - Diego</span></div>"
+}

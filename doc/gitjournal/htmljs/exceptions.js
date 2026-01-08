@@ -40,5 +40,23 @@ const exceptions = [
     "duration": 20,
     "status": "Done",
     "author": "Evinne8"
-  }
+  },
+  {
+    "patch": true,
+    "name": "feat(code) revue des test unitaire et e2e avec Diego",
+    "description": "Revue complète des tests unitaires et end-to-end réalisée avec Diego.",
+    "date": "2026-01-05T09:00:00.000Z",
+    "duration": 45,
+    "status": "Done",
+    "author": "Evinne8"
+  },
+  {
+    "patch": true,
+    "name": "chore(eval80%) faire l'eval des 80% avec la prof",
+    "description": "Faire l'évaluation technique des 80% avec la prof.",
+    "date": "2026-01-05T10:00:00.000Z",
+    "duration": 15,
+    "status": "Done",
+    "author": "Evinne8"
+  },
 ]
