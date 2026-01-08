@@ -247,7 +247,7 @@ date: "2025"
    - 3.1 [Tests manuels](#31-tests-manuels)
    - 3.2 [Tests unitaires backend (Jest)](#32-tests-unitaires-backend-jest)
 4. [Description des tests backend et E2E effectués](#4-description-des-tests-backend-et-e2e-effectués)
-5. [Résultats de la campagne de test unitaire et e2e](#5-résultats-de-la-campagne-de-test-unitaire-et-e2e)
+5. [Résultats des test unitaire et e2e](#5-résultats-de-la-campagne-de-test-unitaire-et-e2e)
    - 5.1 [Tests Unitaires : Echecs et Rollback](#51-tests-unitaires--echecs-et-rollback)
    - 5.2 [Tests E2E et Problème de Recherche (Flaky Test)](#52-tests-e2e-et-problème-de-recherche-flaky-test)
    - 5.3 [Couverture de code (Coverage)](#53-couverture-de-code-coverage)
@@ -482,26 +482,34 @@ Tester les interactions avec les tâches existantes :
 
 ---
 
-# 5. Résultats de la campagne de test unitaire et e2e
+# 5. Résultats des test unitaire et e2e
 
 ## 5.1 Tests Unitaires
 
 Tous les tests unitaires sont passés.
 
 ![Capture d'écran test unitaire](./images/unitTest.png)
-_(Figure 1 : Capture d'écran montrant les tests unitaires)_
+(Figure 1 : Capture d'écran montrant les tests unitaires)
 
 ## 5.2 Tests E2E et Problème de Recherche (Flaky Test)
 
 Les tests Cypress passent globalement, mais nous avons identifié un comportement instable.
 
-![Capture d'écran tests E2E Cypress](./images/cypress-e2e.png)
-_(Figure 2 : Capture d'écran de l'interface Cypress)_
+<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0px;">
+    <img src="./images/e2eAllTest1.png" alt="Cover Image" style="width: 49%; height: auto; margin-bottom: 0;">
+    <img src="./images/e2eAllTest2.png" alt="Cover Image" style="width: 49%; height: auto; margin-bottom: 0;">
+</div>
+(Figure 2 : Captures d'écran de l'interface Cypress)
 
 </div>
 
 **Bug aléatoire sur la recherche :**
 Le test de recherche d'une tâche échoue de manière aléatoire pour une raison inexpliquée (Flaky Test). Il semble que Cypress tente de vérifier le résultat du filtre avant que le DOM ne soit totalement mis à jour par Vue.js, ou qu'il y ait une latence réseau imprévisible.
+
+<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+    <img src="./images/searchBarE2EGood.png" alt="Cover Image" style="width: 49%; height: auto; margin-bottom: 0;">
+    <img src="./images/searchBarE2EBad.png" alt="Cover Image" style="width: 49%; height: auto; margin-bottom: 0;">
+</div>
 
 <div class="keep-together">
 
@@ -510,7 +518,7 @@ Le test de recherche d'une tâche échoue de manière aléatoire pour une raison
 Voici le rapport HTML généré par Jest :
 
 ![Capture d'écran Coverage HTML](./images/coverage.png)
-_(Figure 3 : Rapport de couverture HTML)_
+(Figure 3 : Rapport de couverture HTML)
 
 </div>
 
