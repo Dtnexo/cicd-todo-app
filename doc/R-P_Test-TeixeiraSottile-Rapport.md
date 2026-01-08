@@ -220,7 +220,7 @@ date: "2025"
 
 <div class="cover-page">
     <div class="cover-title">Rapport de Test – cicd-todo-app</div>
-    <img src="./images/cover.png" class="cover-image" alt="Cover Image">
+    <img src="./images/firstPageImage.png" class="cover-image" alt="Cover Image">
     <div class="cover-info">
         <p>Evan Sottile & Diego Teixeira – GRP3D</p>
         <p>Lausanne - Vennes</p>
@@ -420,14 +420,11 @@ Tests effectués :
 
 ### 4.3 Todo Controller
 
-- création de todo avec titre vide → rejet
-- création valide
-- mise à jour inexistante → erreur 404
-
-### 4.4 Middleware d’authentification
-
-- absence de token → 401
-- token valide → next()
+- Création de todo avec titre vide → rejet
+- Création valide
+- Mettre en done le todo
+- Supprimer le todo
+- Rechercher un todo
 
 ### 4.5 Description des tests E2E (Cypress)
 
@@ -563,11 +560,12 @@ Suite aux tests manuels et aux tests unitaires réalisés, plusieurs corrections
 
 Les corrections backend concernent principalement la validation des données et la gestion des erreurs.
 
-- Ajout de validations sur les champs critiques (email, mot de passe, titre de tâche)
 - Gestion correcte des valeurs nulles ou vides
 - Prévention des crashs causés par des chaînes trop longues
 - Amélioration des messages d’erreur retournés par l’API
 - Sécurisation du middleware d’authentification (vérification stricte du token)
+- Validation du code postal (NPA) : ajout d'une vérification stricte dans `user.controller.js` (rejet des valeurs non numériques avec `isNaN`) pour éviter les crashs et garantir l'intégrité des données
+- Amélioration de la création d'utilisateur : refactoring de `createUser` avec `try/catch` pour gérer correctement les erreurs de contrainte d'unicité (email déjà utilisé) et éviter l'affichage de logs d'erreurs alarmants ("crashes") qui étaient en réalité des erreurs gérées.
 
 Ces corrections ont été validées à l’aide des tests unitaires Jest afin d’éviter toute régression.
 
@@ -575,9 +573,9 @@ Ces corrections ont été validées à l’aide des tests unitaires Jest afin d�
 
 Certaines corrections mineures ont été identifiées côté frontend, notamment :
 
-- amélioration de certains messages d’erreur
+- améliorations de certains messages d’erreur : extraction correcte des messages d'erreur de l'API dans `ProfileLogin`, `ProfileSignup`, `ProfileEdit` et `TodoAdd` pour afficher des retours clairs (ex: "Ce compte n'existe pas !", "Un compte avec cet email exist déjà !").
 - corrections orthographiques dans l’interface
-- ajustements mineurs de comportement (UX)
+- Modification du champ de saisie du code postal (NPA) pour imposer un type numérique (`type="number"`)
 
 Les corrections frontend restent cependant hors du périmètre principal de ce projet, qui était orienté tests.
 
