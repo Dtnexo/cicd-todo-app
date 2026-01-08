@@ -418,11 +418,54 @@ Tests effectués :
 
 ### 4.5 Description des tests E2E (Cypress)
 
-Nous avons également mis en place des tests de bout en bout (E2E) pour valider les scénarios utilisateurs critiques :
+Pour valider le bon fonctionnement de l'application, j'ai déroulé plusieurs scénarios précis via Cypress. Voici le détail de ce que je vérifie dans chaque fichier :
 
-- **Authentification :** Inscription, Login, Logout.
-- **Gestion des tâches :** Création et suppression de tâches.
-- **Recherche :** Filtrage des tâches via la barre de recherche.
+#### 1. Flux de connexion (login)
+
+Dans ce fichier, s'assurer que la porte d'entrée de l'application est sécurisée et fonctionnelle :
+
+- Connexion réussie : Vérifier qu'en saisissant des identifiants valides, il y a une redirection vers la page d'accueil et que le menu de profil apparaît.
+- Gestion des erreurs : Vérifier que le message d'erreur explicite s'affiche bien à l'utilisateur.
+- Déconnexion : Vérifier le cycle complet : une fois connecté, cliquer sur "Déconnexion" et s'assurer que l'utilisateur est bien renvoyé vers la page de login et que la session est fermée.
+
+#### 2. Navigation (navigation)
+
+Ici, tester le comportement global de l'interface et la protection des accès :
+
+- Navigation publique : Vérifier que les liens de base fonctionnent et que si l'utilisateur n'est pas connecté, il est redirigé vers le login.
+- Thème (Dark Mode) : Vérifier l'interface utilisateur en activant puis désactivant le mode sombre pour vérifier que la classe CSS change bien dynamiquement sur la page.
+- Routes protégées : Vérifier d'accéder à des pages privées (comme /profile) sans être connecté pour vérifier que la sécurité bloque l'accès. Vérifier ensuite qu'une fois connecté, l'accès est autorisé.
+
+#### 3. Gestion du profil (profile)
+
+Vérifier ici toutes les actions qu'un utilisateur peut faire sur son propre compte :
+
+- Affichage des données : Vérifier que l'email et les infos de l'utilisateur connecté s'affichent correctement à l'écran.
+- Modification du profil : Vérifier un utilisateur qui change son nom et son adresse. Vérifier le formulaire et recharger la page pour être sûr que les nouvelles données ont bien été sauvegardées en base de données.
+- Suppression de compte : C'est le test critique. Cliquer sur "Supprimer", valider la fenêtre de confirmation (modale), et vérifier non seulement que l'utilisateur est déconnecté, mais aussi qu'il est impossible de se reconnecter avec ce compte par la suite (il a bien été détruit).
+
+#### 4. Flux d'inscription (signup)
+
+Avant même de se connecter, il faut pouvoir créer un compte proprement :
+
+- Validations de formulaire : Vérifier tous les cas d'erreur : soumission d'un formulaire vide, format d'email invalide, mot de passe trop court ou confirmation de mot de passe qui ne correspond pas.
+- Création de compte valide : Vérifier le cas nominal où tout est correct : l'inscription doit réussir et me rediriger vers la page de login.
+- Gestion des doublons : Vérifier de créer un compte avec un email qui existe déjà pour m'assurer que l'API renvoie bien une erreur et empêche le doublon.
+
+#### 5. Création de tâches (todo-creation)
+
+Vérifier ici la fonctionnalité d'ajout de contenu :
+
+- Validation des champs : Vérifier qu'il est impossible de créer une tâche si le formulaire est vide, un message d'erreur doit apparaître.
+- Ajout réussi : Remplir le contenu et la date, valider, et vérifier que la nouvelle tâche s'affiche bien immédiatement dans la liste des todos.
+
+#### 6. Gestion des tâches (todo-management)
+
+Tester les interactions avec les tâches existantes :
+
+- Recherche et filtrage : Taper du texte dans la barre de recherche et vérifier que la liste se met à jour en temps réel pour n'afficher que les tâches correspondantes.
+- Changement de statut : Cliquer sur une tâche pour la passer de "À faire" à "Terminé" (et inversement) et vérifier que l'état visuel change bien.
+- Suppression : Cliquer sur l'icône de suppression d'une tâche spécifique et vérifier qu'elle disparaît bien de la liste sans affecter les autres.
 
 ---
 

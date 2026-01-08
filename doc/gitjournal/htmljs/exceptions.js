@@ -59,4 +59,12 @@ const exceptions = [
     "status": "Done",
     "author": "Evinne8"
   },
+  {
+    "sha": "40544d7486874d1c9787a667f2f34ec0ff267421",
+    "description": "J'essaie de le faire comme un vrai rapport (pied de page, page de garde, table des matières, etc...). Ce qui est compliqué",
+    "date": "2026-01-05T10:00:00.000Z",
+    "duration": 105,
+    "status": "Done",
+    "author": "Evinne8"
+  },
 ]
