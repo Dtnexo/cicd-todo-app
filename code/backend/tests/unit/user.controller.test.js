@@ -89,6 +89,24 @@ describe('UserController', () => {
       });
     });
 
+    test("devrait retourner 409 si l'email existe déjà", async () => {
+      // Arrange
+      const error = new Error();
+      error.name = 'SequelizeUniqueConstraintError';
+      User.create.mockRejectedValue(error);
+
+      req.body = { email: 'a@a.com', password: '123' };
+
+      // Act
+      await UserController.createUser(req, res);
+
+      // Assert
+      expect(res.status).toHaveBeenCalledWith(409);
+      expect(res.json).toHaveBeenCalledWith({
+        message: 'Un compte avec cet email exist déjà !'
+      });
+    });
+
     test('devrait retourner 409 en cas de création impossible', async () => {
       // Arrange
       User.create.mockRejectedValue(new Error());
@@ -150,7 +168,7 @@ describe('UserController', () => {
       // Assert
       expect(res.status).toHaveBeenCalledWith(500);
     });
-  }); 
+  });
 
   // EDIT USER
   describe('editUser', () => {
@@ -187,6 +205,32 @@ describe('UserController', () => {
       });
     });
 
+    test('devrait rejeter un zip non numérique avec 400', async () => {
+      // Arrange
+      req.sub = 1;
+      req.body = { zip: 'pasUnNombre' };
+
+      const fakeUser = {
+        name: null,
+        address: null,
+        zip: null,
+        location: null,
+        save: jest.fn()
+      };
+
+      User.findOne.mockResolvedValue(fakeUser);
+
+      // Act
+      await UserController.editUser(req, res);
+
+      // Assert
+      expect(fakeUser.save).not.toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({
+        message: 'Le code postal doit être un nombre.'
+      });
+    });
+
     test('devrait retourner 404 si user non trouvé', async () => {
       req.sub = 10;
       User.findOne.mockResolvedValue(null);
@@ -210,7 +254,7 @@ describe('UserController', () => {
       expect(res.status).toHaveBeenCalledWith(500);
     });
   });
-  
+
   // DELETE USER
   describe('deleteCurrentUser', () => {
     test('devrait supprimer un user et renvoyer 200', async () => {
