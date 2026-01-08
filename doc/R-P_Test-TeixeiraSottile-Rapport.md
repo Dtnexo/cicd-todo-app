@@ -85,8 +85,7 @@ date: "2025"
     }
 
     .cover-image {
-        width: 80%; /* responsive width */
-        max-width: 450px;
+        width: 90%; /* responsive width */
         height: auto;
         margin-bottom: 60px;
         border-radius: 8px;
@@ -487,12 +486,10 @@ Tester les interactions avec les tâches existantes :
 
 ## 5.1 Tests Unitaires
 
-Lors de la mise en place des tests, nous avons rencontré des échecs lors d'une tentative de refactoring du backend.
+Tous les tests unitaires sont passés.
 
-![Capture d'écran test unitaire échoué](./images/unitTest.png)
+![Capture d'écran test unitaire](./images/unitTest.png)
 _(Figure 1 : Capture d'écran montrant les tests unitaires)_
-
-<div class="keep-together">
 
 ## 5.2 Tests E2E et Problème de Recherche (Flaky Test)
 
