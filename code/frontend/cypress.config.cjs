@@ -8,7 +8,8 @@ const { initModels } = require('../backend/models');
 module.exports = defineConfig({
   e2e: {
     specPattern: 'cypress/e2e/**/*.e2e.test.js',
-    baseUrl: 'http://localhost:4173', // your frontend
+    baseUrl: 'http://localhost:5173', // your frontend
+    experimentalRunAllSpecs: true,
     env: {
       BACKEND_URL: 'http://localhost:3000', // your API
       USER_EMAIL: "john@example.com",
