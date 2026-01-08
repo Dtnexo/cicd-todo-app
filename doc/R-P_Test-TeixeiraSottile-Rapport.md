@@ -248,8 +248,8 @@ date: "2025"
    - 3.2 [Tests unitaires backend (Jest)](#32-tests-unitaires-backend-jest)
 4. [Description des tests backend et E2E effectués](#4-description-des-tests-backend-et-e2e-effectués)
 5. [Résultats des test unitaire et e2e](#5-résultats-de-la-campagne-de-test-unitaire-et-e2e)
-   - 5.1 [Tests Unitaires : Echecs et Rollback](#51-tests-unitaires--echecs-et-rollback)
-   - 5.2 [Tests E2E et Problème de Recherche (Flaky Test)](#52-tests-e2e-et-problème-de-recherche-flaky-test)
+   - 5.1 [Tests Unitaires](#51-tests-unitaires)
+   - 5.2 [Tests E2E et Problème de Recherche](#52-tests-e2e-et-problème-de-recherche)
    - 5.3 [Couverture de code (Coverage)](#53-couverture-de-code-coverage)
 6. [Rapport de tests (statut, conclusion)](#6-rapport-de-tests-statut-conclusion)
 7. [Corrections apportées au code](#7-corrections-apportées-au-code)
@@ -491,7 +491,9 @@ Tous les tests unitaires sont passés.
 ![Capture d'écran test unitaire](./images/unitTest.png)
 (Figure 1 : Capture d'écran montrant les tests unitaires)
 
-## 5.2 Tests E2E et Problème de Recherche (Flaky Test)
+<a href="file:///C:/Users/pe41bnd/Documents/GitHub/cicd-todo-app/code/backend/test-report.html" target="_blank" title="Test Report">Lien sur la page html du rapport des tests unitaires</a>
+
+## 5.2 Tests E2E et Problème de Recherche
 
 Les tests Cypress passent globalement, mais nous avons identifié un comportement instable.
 
