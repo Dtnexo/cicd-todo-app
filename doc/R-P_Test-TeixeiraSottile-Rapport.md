@@ -5,75 +5,204 @@ date: "2025"
 ---
 
 <style>
-    /* CSS pour forcer les sauts de page avec l'extension yzane */
+    /* ----------------------------------------------------------- */
+    /* RESET & BASE STYLES                                         */
+    /* ----------------------------------------------------------- */
+    
+    /* Reset margins/paddings for the PDF generation context */
+    body, .markdown-body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 14px;
+        line-height: 1.6;
+        color: #333;
+        margin: 0 !important;
+        padding: 0 !important;
+        max-width: none !important;
+        box-sizing: border-box;
+    }
+
+    /* ----------------------------------------------------------- */
+    /* PAGE LAYOUT & MARGINS                                       */
+    /* ----------------------------------------------------------- */
+
+    /* 
+       Define global page size/margins. 
+       Bottom margin is large (3.5cm) to accommodate the footer.
+    */
+    /* 
+       Define global page size. 
+       Margins are handled by .vscode/settings.json (2cm/3.5cm).
+       We do NOT set margin: 0 here because it kills the header/footer.
+       We do NOT set specific margins here to avoid double margins.
+    */
+    @page {
+        size: A4;
+    }
+
+    /* utility class for manual page breaks */
     .page-break {
         page-break-after: always;
     }
+
+    /* ----------------------------------------------------------- */
+    /* COVER PAGE STYLING                                          */
+    /* ----------------------------------------------------------- */
     
-    /* Reset body padding to prevent content shift */
-    body, .markdown-body {
-        padding: 0 !important;
-        margin: 0 !important;
-        max-width: none !important;
-        width: 75% !important;
-        height: 75% !important;
-        box-sizing: border-box !important;
-    }
-
-    /* Hide header/footer ONLY on first page by removing margins */
-    @page :first {
-        margin: 0;
-    }
-
-    /* Cover Page Styling */
     .cover-page {
+        /* Flexbox to center everything perfectly */
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: 40px; /* Padding to compensate for 0 margin */
-        height: 90vh; /* Reduced to prevent blank page */
-        width: 75%;
-        height: 75%;
-        text-align: center;
+        
+        /* 
+           Compensate for the global margins defined in settings.json 
+           (Top/Left/Right: 2cm, Bottom: 3.5cm) to achieve full bleed.
+        */
+        margin-top: -2cm;
+        margin-left: -2cm;
+        margin-right: -2cm;
+        margin-bottom: -3.5cm;
+        
+        /* Full viewport height to center vertically on the page */
+        height: 100vh;
+        width: calc(100% + 4cm); /* 100% + left + right margins */
+        
+        /* Padding to ensure content doesn't hit edges */
+        padding: 2cm;
         box-sizing: border-box;
-    }
-    .cover-title {
-        font-size: 36px;
-        font-weight: bold;
-        margin-bottom: 50px;
-        color: #2c3e50;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-    .cover-image {
-        max-width: 100%;
-        width: 400px;
-        margin-bottom: 50px;
-        border-radius: 4px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-    .cover-info {
-        font-size: 16px;
-        line-height: 1.8;
-        color: #444;
         text-align: center;
-        border-top: 2px solid #eee;
-        padding-top: 20px;
-        width: 75%;
-        height: 75%;
     }
-    .cover-info strong {
+
+    .cover-title {
+        font-size: 28pt; /* Large title */
+        font-weight: bold;
         color: #2c3e50;
+        margin-bottom: 40px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        line-height: 1.2;
+    }
+
+    .cover-image {
+        width: 80%; /* responsive width */
+        max-width: 450px;
+        height: auto;
+        margin-bottom: 60px;
+        border-radius: 8px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    .cover-info {
+        width: 100%;
+        padding-top: 30px;
+        border-top: 2px solid #ecf0f1;
+    }
+
+    .cover-info p {
+        margin: 8px 0;
+        font-size: 14pt;
+        color: #7f8c8d;
+    }
+
+    /* ----------------------------------------------------------- */
+    /* CONTENT STYLING                                             */
+    /* ----------------------------------------------------------- */
+
+    /* Force headers to stay with their content */
+    h1, h2, h3, h4, h5, h6 {
+        page-break-after: avoid;
+        break-after: avoid;
+    }
+
+    /* Force content following a header to stay with the header */
+    h1 + p, h1 + ul, h1 + ol, h1 + table, h1 + pre,
+    h2 + p, h2 + ul, h2 + ol, h2 + table, h2 + pre,
+    h3 + p, h3 + ul, h3 + ol, h3 + table, h3 + pre {
+        page-break-before: avoid;
+        break-before: avoid;
+    }
+
+    h1 {
+        color: #2c3e50;
+        border-bottom: 3px solid #2c3e50;
+        padding-bottom: 15px;
+        margin-top: 40px;
+        margin-bottom: 25px;
+        font-size: 24pt;
+    }
+
+    h2 {
+        color: #34495e;
+        border-bottom: 1px solid #bdc3c7;
+        padding-bottom: 10px;
+        margin-top: 35px;
+        margin-bottom: 20px;
+        font-size: 18pt;
+    }
+
+    h3 {
+        color: #2980b9;
+        margin-top: 25px;
+        margin-bottom: 15px;
+        font-size: 14pt;
+    }
+
+    ul, ol {
+        margin-bottom: 20px;
+        padding-left: 25px;
     }
     
-    h1 { color: #2c3e50; border-bottom: 2px solid #2c3e50; padding-bottom: 10px; }
-    h2 { color: #34495e; margin-top: 30px; }
-    h3 { color: #576574; margin-top: 25px; }
-    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-    th { background-color: #f2f2f2; }
-    img { max-width: 100%; border: 1px solid #ddd; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 0.9em;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+        /* Allow table to break across pages, but individual rows should stay intact */
+    }
+    
+    tr {
+        page-break-inside: avoid;
+        break-inside: avoid;
+        page-break-after: auto;
+    }
+    
+    th, td {
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+    
+    th {
+        background-color: #2c3e50;
+        color: #ffffff;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+    
+    tr:nth-child(even) {
+        background-color: #f8f9fa;
+    }
+
+    img {
+        display: block; /* Ensure it behaves as a block for paging */
+        max-width: 100%;
+        border: 1px solid #ecf0f1;
+        border-radius: 4px;
+        margin: 15px auto; /* Center if block */
+        page-break-inside: avoid; /* Don't split images */
+    }
+    
+    /* Code blocks */
+    pre, code {
+        background-color: #f8f8f8;
+        font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        padding: 2px 4px;
+        border-radius: 3px;
+        page-break-inside: avoid; /* Don't split code blocks */
+        display: block; /* Ensure break rules apply */
+    }
 </style>
 
 <div class="cover-page">
