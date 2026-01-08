@@ -60,6 +60,6 @@ describe('Flux d’inscription', () => {
     cy.get('button[type="submit"]').click();
 
     // Un message d’erreur doit s’afficher
-    cy.get('p span').should('contain', 'An error occurred'); 
+    cy.get('p span').should('contain', 'Un compte avec cet email exist déjà !'); 
   });
 });

@@ -21,7 +21,7 @@ describe('Gestion du profil', () => {
     
     // Je vais sur la page profil
     cy.get('.profile-menu button').click();
-    cy.contains('Mon Profile').click();
+    cy.contains('Mon Profil').click();
     cy.url().should('include', '/profile');
   });
 
