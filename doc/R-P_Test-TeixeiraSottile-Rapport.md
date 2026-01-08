@@ -192,6 +192,13 @@ date: "2025"
         border-radius: 4px;
         margin: 15px auto; /* Center if block */
         page-break-inside: avoid; /* Don't split images */
+        break-inside: avoid;
+    }
+
+    /* Force images to stay with the paragraph/list that precedes them */
+    p + img, ul + img, ol + img, li + img {
+        page-break-before: avoid;
+        break-before: avoid;
     }
     
     /* Code blocks */
@@ -203,11 +210,18 @@ date: "2025"
         page-break-inside: avoid; /* Don't split code blocks */
         display: block; /* Ensure break rules apply */
     }
+
+    /* Utility class to prevent breaks inside a block */
+    .keep-together {
+        page-break-inside: avoid;
+        break-inside: avoid;
+        display: block;
+    }
 </style>
 
 <div class="cover-page">
     <div class="cover-title">Rapport de Test – cicd-todo-app</div>
-    <img src="./assets/cover.png" class="cover-image" alt="Cover Image">
+    <img src="./images/cover.png" class="cover-image" alt="Cover Image">
     <div class="cover-info">
         <p>Evan Sottile & Diego Teixeira – GRP3D</p>
         <p>Lausanne - Vennes</p>
@@ -471,32 +485,37 @@ Tester les interactions avec les tâches existantes :
 
 # 5. Résultats de la campagne de test unitaire et e2e
 
-## 5.1 Tests Unitaires : Echecs et Rollback
+## 5.1 Tests Unitaires
 
-Lors de la mise en place des tests, nous avons rencontré des échecs significatifs lors d'une tentative de refactoring du backend.
+Lors de la mise en place des tests, nous avons rencontré des échecs lors d'une tentative de refactoring du backend.
 
-![Capture d'écran test unitaire échoué](./assets/jest-failed.png)
-_(Figure 1 : Capture d'écran montrant les tests unitaires échoués)_
+![Capture d'écran test unitaire échoué](./images/unitTest.png)
+_(Figure 1 : Capture d'écran montrant les tests unitaires)_
 
-**Explication du Rollback :**
-Face à l'instabilité introduite par ces modifications, nous avons décidé d'effectuer un **Rollback** complet du code backend vers la dernière version stable. Plutôt que d'adapter les tests à un code buggé, nous avons restauré le code fonctionnel et adapté nos tests pour garantir cette stabilité.
+<div class="keep-together">
 
 ## 5.2 Tests E2E et Problème de Recherche (Flaky Test)
 
 Les tests Cypress passent globalement, mais nous avons identifié un comportement instable.
 
-![Capture d'écran tests E2E Cypress](./assets/cypress-e2e.png)
+![Capture d'écran tests E2E Cypress](./images/cypress-e2e.png)
 _(Figure 2 : Capture d'écran de l'interface Cypress)_
+
+</div>
 
 **Bug aléatoire sur la recherche :**
 Le test de recherche d'une tâche échoue de manière aléatoire pour une raison inexpliquée (Flaky Test). Il semble que Cypress tente de vérifier le résultat du filtre avant que le DOM ne soit totalement mis à jour par Vue.js, ou qu'il y ait une latence réseau imprévisible.
+
+<div class="keep-together">
 
 ## 5.3 Couverture de code (Coverage)
 
 Voici le rapport HTML généré par Jest :
 
-![Capture d'écran Coverage HTML](./assets/coverage-report.png)
+![Capture d'écran Coverage HTML](./images/coverage.png)
 _(Figure 3 : Rapport de couverture HTML)_
+
+</div>
 
 ## Synthèse générale
 
