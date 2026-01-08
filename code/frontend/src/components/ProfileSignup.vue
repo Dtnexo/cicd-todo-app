@@ -35,8 +35,8 @@ const onSubmit = async (formValues: Record<string, any>) => {
       loading.value = false;
       router.push('/login');
     });
-  } catch (e) {
-    errorMsg.value = (e as { error: string }).error || 'An error occurred';
+  } catch (e: any) {
+    errorMsg.value = typeof e === 'string' ? e : "Erreur lors de l'inscription";
     loading.value = false;
   }
 };

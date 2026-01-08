@@ -13,6 +13,7 @@ import AppSpinner from '@/components/AppSpinner.vue';
 const userStore = useUser();
 const loading = ref(false);
 const success = ref(false);
+const errorMsg = ref('');
 const showDialog = ref(false);
 
 const schema = Yup.object().shape({
@@ -29,8 +30,8 @@ const onSubmit = async (formData: Record<string, any>) => {
       success.value = true;
       setTimeout(() => success.value = false, 3000); // Hide after 3s
     });
-  } catch (e) {
-    console.error(e);
+  } catch (e: any) {
+    errorMsg.value = typeof e === 'string' ? e : "Erreur lors de la mise à jour";
     loading.value = false;
   }
 };
@@ -62,11 +63,14 @@ const location = computed(() => userStore.currentUser?.location);
       <h1
         class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
       >
-        Mon Profile
+        Mon Profil
       </h1>
       <!-- Success Message -->
       <div v-if="success" class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
-        <span class="font-medium">Succès!</span> Profile updated.
+        <span class="font-medium">Succès!</span> Profil mis à jour.
+      </div>
+      <div v-if="errorMsg" class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+        <span class="font-medium">Erreur!</span> {{ errorMsg }}
       </div>
       <p class="text-left mt-2 text-md text-gray-600 dark:text-gray-400">
         {{ userStore.currentUser?.email }}
@@ -83,7 +87,7 @@ const location = computed(() => userStore.currentUser?.location);
           <FormInput name="address" :value="address" type="text" label="Adresse" />
         </div>
         <div class="col-span col-start-1">
-          <FormInput name="zip" :value="zip" type="text" label="NPA" />
+          <FormInput name="zip" :value="zip" type="number" label="NPA" />
         </div>
         <div class="col-span-3">
           <FormInput name="location" :value="location" type="text" label="Lieu" />

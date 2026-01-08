@@ -30,8 +30,8 @@ const onSubmit = async () => {
     // clear form after successful submission
     text.value = '';
     date.value = '';
-  } catch (e) {
-    errorMsg.value = (e as { error: string }).error || 'Une erreur est survenue';
+  } catch (e: any) {
+    errorMsg.value = typeof e === 'string' ? e : "Une erreur est survenue";
   } finally {
     loading.value = false;
   }

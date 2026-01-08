@@ -102,7 +102,7 @@ const imgUrlProfile = new URL('../assets/funny-smile.png', import.meta.url).href
                     :class="[active ? 'bg-gray-100' : '', 'flex px-4 py-2 text-sm text-gray-700']"
                   >
                     <UserIcon class="h-5 w-5" />
-                    Mon Profile</a
+                    Mon Profil</a
                   >
                 </MenuItem>
                 <MenuItem v-slot="{ active }">
@@ -143,15 +143,13 @@ const imgUrlProfile = new URL('../assets/funny-smile.png', import.meta.url).href
   </Disclosure>
 </template>
 
-<style scoped lang="scss">
-.profile-menu {
-  .menu-item {
-    width: 100%;
-  }
-  svg {
-    width: 20px;
-    margin-right: 5px;
-  }
+<style scoped>
+.profile-menu .menu-item {
+  width: 100%;
+}
+.profile-menu svg {
+  width: 20px;
+  margin-right: 5px;
 }
 h1 {
   margin-left: 10px;

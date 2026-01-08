@@ -8,7 +8,7 @@ const year = new Date().getFullYear();
         ©
         <!-- -->{{ year
         }}<!-- -->
-        Matinfo Labs. Tout droits réserver.
+        Matinfo Labs. Tous droits réservés.
       </p>
       <div
         class="order-1 sm:order-2 flex items-center justify-center space-x-4 text-sm/6 font-semibold text-slate-900 md:justify-end dark:text-white"

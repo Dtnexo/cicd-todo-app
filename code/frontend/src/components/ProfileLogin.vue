@@ -31,8 +31,8 @@ const onSubmit = handleSubmit(async (formValues) => {
       loading.value = false;
       router.push('/');
     });
-  } catch (e) {
-    errorMsg.value = e as string;
+  } catch (e: any) {
+    errorMsg.value = typeof e === 'string' ? e : "Erreur de connexion";
     loading.value = false;
   } 
 });
@@ -64,7 +64,7 @@ const onSubmit = handleSubmit(async (formValues) => {
         <div class="flex items-center justify-between">
           <div class="text-sm">
             <a href="#" class="font-medium text-primary-600 hover:underline dark:text-primary-500"
-              >Mot de passe oublier ?</a
+              >Mot de passe oublié ?</a
             >
           </div>
         </div>
@@ -74,7 +74,7 @@ const onSubmit = handleSubmit(async (formValues) => {
           class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:ring-blue-300 font-medium rounded-lg text-md px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
         >
           <AppSpinner v-if="loading" class="mx-auto h-6 w-6" />
-          <span v-else>Connecter</span>
+          <span v-else>Se connecter</span>
         </button>
         <p class="text-sm font-light text-gray-500 dark:text-gray-400">
           Vous n'avez pas encore un compte?
